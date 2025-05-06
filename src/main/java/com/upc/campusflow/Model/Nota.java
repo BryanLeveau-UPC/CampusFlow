@@ -20,7 +20,6 @@ public class Nota {
     @ManyToOne
     @JoinColumn(name = "id_asignatura")
     private Asignatura Asignatura;
-    //para el eliminado lógico
     private boolean Estado;
 
 }
