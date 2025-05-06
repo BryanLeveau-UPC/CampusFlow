@@ -49,36 +49,33 @@ public class EstudianteEstadisticaService {
         return estudianteEstadisticaDTO;
     }
     //Modificar
-    public EstudianteEstadisticaDTO modificar(Long id, EstudianteEstadisticaDTO dto) {
+    public EstudianteEstadisticaDTO modificar(Long id, EstudianteEstadisticaDTO estudianteEstadisticaDTO) {
         EstudianteEstadistica existente = estudianteEstadisticaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Estadística de estudiante no encontrada con ID: " + id));
 
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.map(dto, existente); // Sobrescribe los datos existentes
+        modelMapper.map(estudianteEstadisticaDTO, existente); // Sobrescribe los datos existentes
 
-        if (dto.getId_Estudiante() != null) {
+        if (estudianteEstadisticaDTO.getId_Estudiante() != null) {
             Estudiante estudiante = new Estudiante();
-            estudiante.setIdEstudiante(dto.getId_Estudiante());
+            estudiante.setIdEstudiante(estudianteEstadisticaDTO.getId_Estudiante());
             existente.setEstudiante(estudiante);
         }
 
         EstudianteEstadistica actualizado = estudianteEstadisticaRepository.save(existente);
-        return modelMapper.map(actualizado, EstudianteEstadisticaDTO.class);
+        EstudianteEstadisticaDTO dto = modelMapper.map(actualizado, EstudianteEstadisticaDTO.class);
+        return dto;
     }
     //Eliminar lógico
-    public void eliminarLogico(Long id) {
+    public EstudianteEstadisticaDTO eliminar(Long id) {
+        ModelMapper modelMapper = new ModelMapper();
         EstudianteEstadistica entidad = estudianteEstadisticaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("EstudianteEstadistica no encontrada con ID: " + id));
-        entidad.setEstado(false); // ← Marcar como inactivo (eliminación lógica)
-        estudianteEstadisticaRepository.save(entidad);
+        entidad.setEstado(false);
+        entidad =  estudianteEstadisticaRepository.save(entidad);
+        EstudianteEstadisticaDTO dto = modelMapper.map(entidad, EstudianteEstadisticaDTO.class);
+        return  dto;
     }
 
 
-    //Eliminar Físico
-    public void eliminar(Long id) {
-        if (!estudianteEstadisticaRepository.existsById(id)) {
-            throw new RuntimeException("No se encontró EstudianteEstadistica con ID: " + id);
-        }
-        estudianteEstadisticaRepository.deleteById(id);
-    }
 }
