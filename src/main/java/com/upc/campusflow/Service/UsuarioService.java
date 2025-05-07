@@ -1,4 +1,69 @@
 package com.upc.campusflow.Service;
 
+import com.upc.campusflow.DTO.ProfesorDTO;
+import com.upc.campusflow.DTO.UsuarioDTO;
+import com.upc.campusflow.Model.Nota;
+import com.upc.campusflow.Model.Profesor;
+import com.upc.campusflow.Model.Usuario;
+import com.upc.campusflow.Repository.ProfesorRepository;
+import com.upc.campusflow.Repository.UsuarioRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
 public class UsuarioService {
+    final UsuarioRepository usuarioRepository;
+    private final ProfesorRepository profesorRepository;
+
+    public UsuarioService(UsuarioRepository usuarioRepository, ProfesorRepository profesorRepository) {
+        this.usuarioRepository = usuarioRepository;
+        this.profesorRepository = profesorRepository;
+    }
+
+    //Listar
+    public List<UsuarioDTO> listar(){
+        List<Usuario> usuarios = usuarioRepository.findAll().stream().filter(Usuario::isEstado).toList();;
+        List<UsuarioDTO> usuarioDTOS = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+
+        for(Usuario usuario : usuarios){
+            UsuarioDTO usuarioDTO = modelMapper.map(usuario, UsuarioDTO.class);
+            usuarioDTOS.add(usuarioDTO);
+        }
+        return usuarioDTOS;
+    }
+
+    //Guardar
+    public UsuarioDTO guardar(UsuarioDTO usuarioDTO){
+        ModelMapper modelMapper = new ModelMapper();
+        Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
+        usuario = usuarioRepository.save(usuario);
+        usuarioDTO = modelMapper.map(usuario, UsuarioDTO.class);
+        return usuarioDTO;
+    }
+
+    //Modificar
+    public UsuarioDTO modificar (Long id, UsuarioDTO usuarioDTO){
+        ModelMapper modelMapper = new ModelMapper();
+        Usuario exits = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+        modelMapper.map(usuarioDTO, exits);
+
+        Usuario actualize = usuarioRepository.save(exits);
+        UsuarioDTO dto = modelMapper.map(actualize, UsuarioDTO.class);
+        return dto;
+    }
+
+    //Eliminar
+    public UsuarioDTO eliminar (Long id){
+        ModelMapper modelMapper = new ModelMapper();
+        Usuario entidad = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+        entidad.setEstado(false);
+        entidad = usuarioRepository.save(entidad);
+        UsuarioDTO dto = modelMapper.map(entidad, UsuarioDTO.class);
+        return dto;
+    }
+
 }
