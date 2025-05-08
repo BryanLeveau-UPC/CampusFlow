@@ -28,7 +28,7 @@ public class Estudiante {
     @JoinColumn(name = "id_estudianteEstadistica")
     private EstudianteEstadistica estudianteEstadistica;
 
-    @OneToOne(mappedBy = "Estudiante")
+    @OneToOne(mappedBy = "estudiante")
     private Usuario usuarios;
 
     @ManyToMany(mappedBy = "estudiantes")

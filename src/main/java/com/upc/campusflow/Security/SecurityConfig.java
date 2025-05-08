@@ -38,10 +38,32 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()  // Rutas abiertas como /auth/login o /auth/register
-                        .anyRequest().authenticated()             // Todas las demás requieren autenticación
+                        // Rutas públicas
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+
+                        // Swagger
+                        .requestMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml",
+                                "/webjars/**",
+                                "/swagger-resources/**"
+                        ).permitAll()
+
+                        // Reglas específicas por rol
+                        .requestMatchers("/producto/agregar").hasAuthority("ADMIN")
+                        .requestMatchers("/producto/transferir").hasAuthority("ADMIN")
+                        .requestMatchers("/producto/listar").hasAuthority("USER")
+                        .requestMatchers("/producto/listar/**").hasAuthority("USER")
+                        .requestMatchers("/agregar").hasAuthority("ADMIN")
+                        .requestMatchers("/listar").hasAuthority("USER")
+
+                        // Cualquier otra petición requiere autenticación
+                        .anyRequest().authenticated()
                 )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // No sesiones, JWT puro
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
