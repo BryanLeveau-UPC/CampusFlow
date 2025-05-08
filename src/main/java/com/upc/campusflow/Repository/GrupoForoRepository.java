@@ -1,13 +1,8 @@
 package com.upc.campusflow.Repository;
 
 import com.upc.campusflow.Model.GrupoForo;
+import com.upc.campusflow.Model.Profesor;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Collection;
-
-public interface GrupoForoRepository {
-    Collection<Object> findAll();
-
-    GrupoForo save(GrupoForo grupoForo);
-
-    <T> ScopedValue<T> findById(Long id);
+public interface GrupoForoRepository extends JpaRepository<GrupoForo, Long> {
 }
