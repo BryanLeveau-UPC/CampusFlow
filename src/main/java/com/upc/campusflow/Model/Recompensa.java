@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Recompenza {
+public class Recompensa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long IDRecompensa;

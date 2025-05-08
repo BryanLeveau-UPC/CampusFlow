@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecompenzaDTO {
+public class RecompensaDTO {
     private Long IDRecompensa;
 
 

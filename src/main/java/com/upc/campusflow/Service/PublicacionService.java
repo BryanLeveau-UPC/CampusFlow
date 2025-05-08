@@ -24,7 +24,7 @@ public class PublicacionService {
 
         if (publicacionDTO.getIdGrupoForo() != null) {
             GrupoForo grupoForo = new GrupoForo();
-            grupoForo.setId(publicacionDTO.getId());
+            grupoForo.setIdGrupoForo(publicacionDTO.getIdGrupoForo().getIdGrupoForo());
             publicacion.setIdGrupoForo(grupoForo);
         }
 
@@ -40,7 +40,7 @@ public class PublicacionService {
         PublicacionDTO dto = modelMapper.map(publicacion, PublicacionDTO.class);
 
         if (publicacion.getIdGrupoForo() != null) {
-            dto.setIdGrupoForo(publicacion.getIdGrupoForo().getId());
+            dto.setIdGrupoForo(publicacion.getIdGrupoForo());
         }
 
         return dto;

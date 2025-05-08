@@ -29,6 +29,6 @@ public class EstudianteEstadistica {
     @JoinColumn(name = "id_estudiante")
     private Estudiante Estudiante;
     @OneToMany(mappedBy = "estudianteEstadistica", cascade  = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List  <Recompenza> recompensas;
+    private List  <Recompensa> recompensas;
     private boolean Estado = true;
 }
