@@ -23,6 +23,6 @@ public class Usuario {
     @OneToOne
     @JoinColumn(name = "id_profesor")
     private Profesor Profesor;
-    private boolean Estado;
+    private boolean Estado = true;
 
 }

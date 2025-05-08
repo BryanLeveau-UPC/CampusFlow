@@ -20,7 +20,7 @@ public class Profesor {
     @OneToOne
     @JoinColumn(name = "id_usuario")
     private Usuario Usuario;
-    private boolean Estado;
+    private boolean Estado = true;
 
     @OneToMany(mappedBy = "IdProfe")
     private List<Evento> idEventos;

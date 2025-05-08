@@ -18,4 +18,5 @@ public class PublicacionDTO {
     private LocalDate Fecha;
     private String label;
     private GrupoForo idGrupoForo;
+    private boolean Estado;
 }

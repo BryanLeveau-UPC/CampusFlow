@@ -23,6 +23,7 @@ public class Publicacion {
     @ManyToOne
     @JoinColumn(name = "IdGrupoF")
     private GrupoForo idGrupoForo;
+    private boolean Estado = true;
 
 
 }

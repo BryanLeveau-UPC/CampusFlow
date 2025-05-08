@@ -12,7 +12,6 @@ public class RecursoDTO {
     private int idRecurso;
     private String tipoArchivo;
     private String url;
-
-
     private Date fechaSubida;
+    private boolean Estado;
 }

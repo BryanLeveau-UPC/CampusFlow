@@ -15,5 +15,5 @@ public class TareaDTO {
     private String descripcion;
     private Date fechaLimite;
     private String prioridad;
-    private String estado;
+    private boolean estado;
 }

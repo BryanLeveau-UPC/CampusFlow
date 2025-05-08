@@ -25,5 +25,5 @@ public class EventoDTO {
     private String Descripcion;
     private int PuntajeRecompensa;
     private Profesor IdProfe;
-    private List<Estudiante> estudiantes;
+    private boolean Estado;
 }

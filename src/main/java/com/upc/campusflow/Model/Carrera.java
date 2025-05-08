@@ -22,7 +22,7 @@ public class Carrera {
 
     @OneToMany(mappedBy = "idCarreras")
     private List<Estudiante> estudiantes;
-    private boolean Estado;
+    private boolean Estado = true;
 
     public static boolean isEstado(Object o) {
 
