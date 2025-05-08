@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -14,7 +16,23 @@ public class Estudiante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long IdEstudiante;
 
+    private int Ciclo;
+
+
+    @ManyToOne
+    @JoinColumn(name = "idCarrera")
+    private Carrera idCarreras;
+
+
     @OneToOne
     @JoinColumn(name = "id_estudianteEstadistica")
     private EstudianteEstadistica estudianteEstadistica;
+
+    @OneToOne(mappedBy = "Estudiante")
+    private Usuario usuarios;
+
+    @ManyToMany(mappedBy = "Estudiantes")
+    private List<Evento> eventos;
+
+
 }

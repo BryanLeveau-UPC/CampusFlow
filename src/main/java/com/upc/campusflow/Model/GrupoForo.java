@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -13,22 +12,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GrupoForo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idGrupoForo;
-    private String titulo;
-    private String descripcion;
-    private String campo;
-    private Date fechaCreacion;
-    @OneToOne
-    @JoinColumn(name = "id_asignatura")
-    private Asignatura Asignatura;
-    @OneToMany(mappedBy = "grupoForo", cascade  = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Publicacion> publicaciones;
-    private boolean Estado = true;
+    private Long Id;
 
-    public static boolean isEstado(Object t) {
 
-        return false;
-    }
+    @OneToMany(mappedBy = "idGrupoForo")
+    private List<Publicacion> Publicaciones;
 }
