@@ -1,7 +1,6 @@
 package com.upc.campusflow.Controller;
 
 import com.upc.campusflow.DTO.EstudianteEstadisticaDTO;
-import com.upc.campusflow.Model.EstudianteEstadistica;
 import com.upc.campusflow.Service.EstudianteEstadisticaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

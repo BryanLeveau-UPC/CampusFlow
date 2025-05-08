@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -19,5 +21,9 @@ public class Profesor {
     @JoinColumn(name = "id_usuario")
     private Usuario Usuario;
     private boolean Estado;
+
+    @OneToMany(mappedBy = "IdProfe")
+    private List<Evento> idEventos;
+
 
 }

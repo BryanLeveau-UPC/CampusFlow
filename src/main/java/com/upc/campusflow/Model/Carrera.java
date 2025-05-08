@@ -18,4 +18,7 @@ public class Carrera {
 
     @OneToMany(mappedBy = "carrera", cascade  = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Asignatura> asignaturas;
+
+    @OneToMany(mappedBy = "idCarreras")
+    private List<Estudiante> estudiantes;
 }
