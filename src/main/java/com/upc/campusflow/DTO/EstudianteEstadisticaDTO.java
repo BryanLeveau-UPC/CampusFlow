@@ -13,6 +13,10 @@ public class EstudianteEstadisticaDTO {
     private Long idEstudianteEstadistica;
     private Date TotalHoraEstudiante;
     private int TareasCompletadas;
+
+
+
+
     private Date UltimaConexion;
     private int NiveldePrioridad;
     private Long Id_Estudiante;

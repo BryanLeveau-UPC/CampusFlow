@@ -20,4 +20,6 @@ public class Profesor {
     private Usuario Usuario;
     private boolean Estado;
 
+
+
 }

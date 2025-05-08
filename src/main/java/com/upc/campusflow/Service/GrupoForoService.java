@@ -22,13 +22,19 @@ public class GrupoForoService {
     //Listar
     public List<GrupoForoDTO> listar(){
 
-        List<GrupoForo> grupoForos = grupoForoRepository.findAll().stream().filter(GrupoForo::isEstado).toList();
+        List<Object> list = new ArrayList<>();
+        for (Object o : grupoForoRepository.findAll()) {
+            if (GrupoForo.isEstado(o)) {
+                list.add(o);
+            }
+        }
+        List<Object> grupoForos = list;
         List<GrupoForoDTO> grupoForoDTOS = new ArrayList<>();
         ModelMapper modelMapper = new ModelMapper();
-        for(GrupoForo grupoForo : grupoForos){
+        for(Object grupoForo : grupoForos){
             GrupoForoDTO grupoForoDTO = modelMapper.map(grupoForo, GrupoForoDTO.class);
             if(grupoForoDTO.getId_asignatura() != null){
-                grupoForoDTO.setId_asignatura(grupoForo.getAsignatura().getIdAsignatura());
+                grupoForoDTO.setId_asignatura(grupoForo.getClass().getSigners());
             }
             grupoForoDTOS.add(grupoForoDTO);
         }

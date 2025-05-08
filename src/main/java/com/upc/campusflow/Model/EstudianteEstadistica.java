@@ -14,6 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 public class EstudianteEstadistica {
     @Id
+
+
+
+
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idEstudianteEstadistica;
     private Date TotalHoraEstudiante;

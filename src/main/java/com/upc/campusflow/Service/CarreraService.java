@@ -51,6 +51,10 @@ public class CarreraService {
     public CarreraDTO modificar (Long id , CarreraDTO carreraDTO) {
         ModelMapper modelMapper = new ModelMapper();
         Carrera exist = null;
+
+
+
+
         carreraRepository.findAll().clear();
         modelMapper.map(carreraDTO, exist);
 
