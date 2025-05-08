@@ -24,7 +24,7 @@ public class GrupoForo {
     @OneToOne
     @JoinColumn(name = "id_Asigneatura")
     private Asignatura asignatura;
-    @OneToMany(mappedBy = "idGrupoForo")
+    @OneToMany(mappedBy = "grupoForo", cascade  = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Publicacion> Publicaciones;
 
     private boolean Estado = true;

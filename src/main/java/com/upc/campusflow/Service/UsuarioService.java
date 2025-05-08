@@ -25,7 +25,7 @@ public class UsuarioService {
 
     //Listar
     public List<UsuarioDTO> listar(){
-        List<Usuario> usuarios = usuarioRepository.findAll().stream().filter(Usuario::isEstado).toList();;
+        List<Usuario> usuarios = usuarioRepository.findAll().stream().filter(Usuario::isEstado).toList();
         List<UsuarioDTO> usuarioDTOS = new ArrayList<>();
         ModelMapper modelMapper = new ModelMapper();
 

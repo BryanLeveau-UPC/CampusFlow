@@ -15,7 +15,7 @@ public class GrupoForoDTO {
     private String Descripcion;
     private String Campo;
     private Date FechaCreacion;
-    private Long id_asignatura;
+    private Long id_Asigneatura;
     private boolean Estado;
 
 }

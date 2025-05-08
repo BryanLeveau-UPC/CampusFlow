@@ -28,21 +28,17 @@ public class CarreraController {
     public ResponseEntity<CarreraDTO> guardar(@RequestBody CarreraDTO carreraDTO){
         return ResponseEntity.ok(carreraService.guardar(carreraDTO));
     }
+
     // Modificar
     @PutMapping("/{id}")
-    public ResponseEntity<CarreraDTO> modificar(@PathVariable Long id,
-                                                @RequestBody CarreraDTO dto) {
-        CarreraDTO actualizado = carreraService.modificar(id, dto);
-        return ResponseEntity.ok(actualizado);
+    public ResponseEntity<CarreraDTO> modificar(@PathVariable Long id, @RequestBody CarreraDTO dto) {
+        return ResponseEntity.ok(carreraService.modificar(id, dto));
     }
 
     // Eliminar lógico
     @DeleteMapping("/{id}")
     public ResponseEntity<CarreraDTO> eliminarLogico(@PathVariable Long id) {
-        CarreraDTO eliminado = carreraService.eliminar(id);
-        return ResponseEntity.ok(eliminado);
+        return ResponseEntity.ok(carreraService.eliminar(id));
     }
-
-
 
 }

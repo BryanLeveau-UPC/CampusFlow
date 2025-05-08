@@ -3,12 +3,15 @@ package com.upc.campusflow.Service;
 import com.upc.campusflow.DTO.GrupoForoDTO;
 import com.upc.campusflow.Model.Asignatura;
 import com.upc.campusflow.Model.GrupoForo;
+import com.upc.campusflow.Model.Nota;
 import com.upc.campusflow.Repository.GrupoForoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GrupoForoService {
@@ -21,20 +24,13 @@ public class GrupoForoService {
 
     //Listar
     public List<GrupoForoDTO> listar(){
-
-        List<Object> list = new ArrayList<>();
-        for (Object o : grupoForoRepository.findAll()) {
-            if (GrupoForo.isEstado(o)) {
-                list.add(o);
-            }
-        }
-        List<Object> grupoForos = list;
+        List<GrupoForo> grupoForos = grupoForoRepository.findAll().stream().filter(GrupoForo::isEstado).toList();
         List<GrupoForoDTO> grupoForoDTOS = new ArrayList<>();
         ModelMapper modelMapper = new ModelMapper();
-        for(Object grupoForo : grupoForos){
+        for (GrupoForo grupoForo : grupoForos) {
             GrupoForoDTO grupoForoDTO = modelMapper.map(grupoForo, GrupoForoDTO.class);
-            if(grupoForoDTO.getId_asignatura() != null){
-                grupoForoDTO.setId_asignatura(grupoForo.getClass().getSigners());
+            if(grupoForo.getAsignatura() != null){
+                grupoForoDTO.setId_Asigneatura(grupoForo.getAsignatura().getIdAsignatura());
             }
             grupoForoDTOS.add(grupoForoDTO);
         }
@@ -45,9 +41,9 @@ public class GrupoForoService {
     public GrupoForoDTO guardar(GrupoForoDTO grupoForoDTO){
         ModelMapper modelMapper = new ModelMapper();
         GrupoForo grupoForo = modelMapper.map(grupoForoDTO, GrupoForo.class);
-        if(grupoForoDTO.getId_asignatura()!= null){
+        if(grupoForoDTO.getId_Asigneatura() != null){
             Asignatura asignatura = new Asignatura();
-            asignatura.setIdAsignatura(grupoForoDTO.getId_asignatura());
+            asignatura.setIdAsignatura(grupoForoDTO.getId_Asigneatura());
             grupoForo.setAsignatura(asignatura);
         }
         grupoForo = grupoForoRepository.save(grupoForo);
@@ -59,24 +55,25 @@ public class GrupoForoService {
     //Modificar
     public GrupoForoDTO modificar (Long id, GrupoForoDTO grupoForoDTO){
         ModelMapper modelMapper = new ModelMapper();
-        GrupoForo exits = (GrupoForo) grupoForoRepository.findById(id).orElseThrow(() -> new RuntimeException("Foro no encontrado con ID: " + id));
+        GrupoForo exits = grupoForoRepository.findById(id).orElseThrow(() -> new RuntimeException("Foro no encontrado con ID: " + id));
         modelMapper.map(grupoForoDTO, exits);
 
-        if(grupoForoDTO.getId_asignatura() != null){
+        if(grupoForoDTO.getId_Asigneatura() != null){
             Asignatura asignatura = new Asignatura();
-            asignatura.setIdAsignatura(grupoForoDTO.getId_asignatura());
+            asignatura.setIdAsignatura(grupoForoDTO.getId_Asigneatura());
             exits.setAsignatura(asignatura);
         }
 
-        GrupoForo actualize = grupoForoRepository.save(exits);
-        GrupoForoDTO dto =  modelMapper.map(actualize, GrupoForoDTO.class);
+        GrupoForo actualizado = grupoForoRepository.save(exits);
+        GrupoForoDTO dto =  modelMapper.map(actualizado, GrupoForoDTO.class);
         return dto;
     }
 
     //Eliminar
     public GrupoForoDTO eliminar (Long id){
         ModelMapper modelMapper = new ModelMapper();
-        GrupoForo entidad = (GrupoForo) grupoForoRepository.findById(id).orElseThrow(() -> new RuntimeException("Foro no encontrado con ID: " + id));
+        GrupoForo entidad = grupoForoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Foro no encontrado con ID: " + id));
         entidad.setEstado(false);
         entidad =  grupoForoRepository.save(entidad);
         GrupoForoDTO dto =  modelMapper.map(entidad, GrupoForoDTO.class);

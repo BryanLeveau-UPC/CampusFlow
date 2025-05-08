@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PublicacionDTO {
-    private Long Id;
+    private Long IdPublicacion;
     private String Contenido;
     private LocalDate Fecha;
     private String label;

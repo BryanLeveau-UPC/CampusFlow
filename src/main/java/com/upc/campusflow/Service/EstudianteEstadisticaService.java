@@ -56,11 +56,6 @@ public class EstudianteEstadisticaService {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.map(estudianteEstadisticaDTO, existente); // Sobrescribe los datos existentes
 
-
-
-
-
-
         if (estudianteEstadisticaDTO.getId_Estudiante() != null) {
             Estudiante estudiante = new Estudiante();
             estudiante.setIdEstudiante(estudianteEstadisticaDTO.getId_Estudiante());

@@ -15,16 +15,15 @@ import java.util.List;
 public class Publicacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long IdPublicacion;
     private String Contenido;
     private LocalDate Fecha;
     private String label;
-    private boolean Estado;
+    private boolean Estado = true;
 
     @ManyToOne
-    @JoinColumn(name = "IdGrupoF")
+    @JoinColumn(name = "idGrupoForo")
     private GrupoForo idGrupoForo;
-    private boolean Estado = true;
 
 
 }
