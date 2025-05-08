@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Recompenza {
+public class Recompensa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long IDRecompenza;
+    private Long IDRecompensa;
     private String Plataforma;
     private String URL;
     @ManyToOne
