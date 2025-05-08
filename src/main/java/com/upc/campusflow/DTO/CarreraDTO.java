@@ -17,9 +17,8 @@ import java.util.List;
 public class CarreraDTO {
 
     private Long idCarrera;
-    private int nombre;
-    private byte[] mallaCurricular;
-    private boolean Estado = true;
-
+    private int Nombre;
+    private boolean Estado;
+    private String Malla_curricular;
 
 }

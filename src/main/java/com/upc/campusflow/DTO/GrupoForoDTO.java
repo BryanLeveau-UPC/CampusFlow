@@ -16,8 +16,6 @@ public class GrupoForoDTO {
     private String campo;
     private Date fechaCreacion;
     private Long id_asignatura;
-    private boolean Estado = true;
+    private boolean Estado;
 
-    public void setId_asignatura(Object[] signers) {
-    }
 }
