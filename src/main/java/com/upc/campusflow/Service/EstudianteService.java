@@ -1,7 +1,9 @@
 package com.upc.campusflow.Service;
 
 import com.upc.campusflow.DTO.EstudianteDTO;
+import com.upc.campusflow.Model.Carrera;
 import com.upc.campusflow.Model.Estudiante;
+import com.upc.campusflow.Model.EstudianteEstadistica;
 import com.upc.campusflow.Repository.EstudianteRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -43,4 +45,44 @@ public class EstudianteService {
         }
         return estudianteDTOS;
     }
+
+    public EstudianteDTO modificar(Long id, EstudianteDTO estudianteDTO) {
+        ModelMapper modelMapper = new ModelMapper();
+        Estudiante existente = iEstudiante.findById(id)
+                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado con ID: " + id));
+
+        if (!existente.isEstado()) {
+            throw new RuntimeException("No se puede modificar un estudiante inactivo.");
+        }
+
+        existente.setCiclo(estudianteDTO.getCiclo());
+
+        if (estudianteDTO.getIdCarreras() != null) {
+            Carrera carrera = new Carrera();
+            carrera.setIdCarrera(estudianteDTO.getIdCarreras());
+            existente.setIdCarreras(carrera);
+        }
+
+        if (estudianteDTO.getEstudianteEstadistica() != null) {
+            EstudianteEstadistica estadistica = new EstudianteEstadistica();
+            estadistica.setIdEstudianteEstadistica(estudianteDTO.getEstudianteEstadistica());
+            existente.setEstudianteEstadistica(estadistica);
+        }
+
+        Estudiante actualizado = iEstudiante.save(existente);
+        return modelMapper.map(actualizado, EstudianteDTO.class);
+    }
+
+    // Eliminar lógico
+    public EstudianteDTO eliminar(Long id) {
+        ModelMapper modelMapper = new ModelMapper();
+        Estudiante entidad = iEstudiante.findById(id)
+                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado con ID: " + id));
+        entidad.setEstado(false);
+        entidad = iEstudiante.save(entidad);
+        return modelMapper.map(entidad, EstudianteDTO.class);
+    }
+
+
+
 }

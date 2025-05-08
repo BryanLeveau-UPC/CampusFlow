@@ -39,4 +39,15 @@ public class PublicacionController {
         log.info("Guardando publicación: " + publicacionDTO.toString());
         return ResponseEntity.status(HttpStatus.CREATED).body(publicacionService.guardar(publicacionDTO));
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<PublicacionDTO> modificar(@PathVariable Long id, @RequestBody PublicacionDTO publicacionDTO) {
+        PublicacionDTO actualizado = publicacionService.modificar(id, publicacionDTO);
+        return ResponseEntity.ok(actualizado);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<PublicacionDTO> eliminar(@PathVariable Long id) {
+        PublicacionDTO eliminado = publicacionService.eliminar(id);
+        return ResponseEntity.ok(eliminado);
+    }
 }

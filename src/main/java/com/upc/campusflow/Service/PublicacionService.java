@@ -40,7 +40,7 @@ public class PublicacionService {
         PublicacionDTO dto = modelMapper.map(publicacion, PublicacionDTO.class);
 
         if (publicacion.getIdGrupoForo() != null) {
-            dto.setIdGrupoForo(publicacion.getIdGrupoForo());
+            dto.setIdGrupoForo(publicacion.getIdGrupoForo().getId());
         }
 
         return dto;
@@ -57,5 +57,27 @@ public class PublicacionService {
         }
 
         return listaDTO;
+    }
+
+    public PublicacionDTO modificar(Long id, PublicacionDTO publicacionDTO) {
+        ModelMapper modelMapper = new ModelMapper();
+        Publicacion existente = publicacionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Publicación no encontrada con ID: " + id));
+        modelMapper.map(publicacionDTO, existente); // Sobrescribe los datos existentes
+
+        Publicacion actualizado = publicacionRepository.save(existente);
+        return modelMapper.map(actualizado, PublicacionDTO.class);
+    }
+
+    public PublicacionDTO eliminar(Long id) {
+        Publicacion publicacion = publicacionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Publicación no encontrada con ID: " + id));
+
+        publicacion.setEstado(false);
+        publicacion = publicacionRepository.save(publicacion);
+        ModelMapper modelMapper = new ModelMapper();
+        PublicacionDTO dto = modelMapper.map(publicacion, PublicacionDTO.class);
+
+        return dto;
     }
 }

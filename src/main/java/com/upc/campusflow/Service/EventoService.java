@@ -55,4 +55,39 @@ public class EventoService {
         }
         return eventoDTOS;
     }
+
+    public EventoDTO modificar(Long id, EventoDTO eventoDTO) {
+        ModelMapper modelMapper = new ModelMapper();
+        Evento existente = iEventoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Evento no encontrado con ID: " + id));
+
+        if (!existente.isEstado()) {
+            throw new RuntimeException("No se puede modificar un evento inactivo.");
+        }
+
+        modelMapper.map(eventoDTO, existente); // Copia los nuevos datos
+
+        if (eventoDTO.getIdProfe() != null) {
+            Profesor profe = new Profesor();
+            profe.setIdProfesor(eventoDTO.getId());
+            existente.setIdProfe(profe);
+        }
+
+        Evento actualizado = iEventoRepository.save(existente);
+        return modelMapper.map(actualizado, EventoDTO.class);
+    }
+
+    // Eliminación lógica
+    public EventoDTO eliminar(Long id) {
+        ModelMapper modelMapper = new ModelMapper();
+        Evento evento = iEventoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Evento no encontrado con ID: " + id));
+
+        evento.setEstado(false);
+        evento = iEventoRepository.save(evento);
+        return modelMapper.map(evento, EventoDTO.class);
+    }
+
+
+
 }

@@ -41,4 +41,16 @@ public class EstudianteController {
         EstudianteDTO guardado = estudianteService.guardar(estudianteDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(guardado);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EstudianteDTO> modificar(@PathVariable Long id, @RequestBody EstudianteDTO estudianteDTO) {
+        EstudianteDTO actualizado = estudianteService.modificar(id, estudianteDTO);
+        return ResponseEntity.ok(actualizado);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<EstudianteDTO> eliminar(@PathVariable Long id) {
+        EstudianteDTO eliminado = estudianteService.eliminar(id);
+        return ResponseEntity.ok(eliminado);
+    }
 }
