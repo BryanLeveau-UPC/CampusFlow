@@ -27,4 +27,7 @@ public class GrupoForo {
     private List<Publicacion> publicaciones;
     private boolean Estado = true;
 
+    public static void isEstado(Object t) {
+
+    }
 }

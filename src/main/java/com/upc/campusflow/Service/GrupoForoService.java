@@ -76,3 +76,5 @@ public class GrupoForoService {
         GrupoForoDTO dto =  modelMapper.map(entidad, GrupoForoDTO.class);
         return dto;
     }
+
+}
