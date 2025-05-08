@@ -39,7 +39,7 @@ public class JwtTokenUtil {
     }
 
     public String getUsernameFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(getSigningKey()).build()
+        return Jwts.parser().setSigningKey(getSigningKey()).build()
                 .parseClaimsJws(token).getBody().getSubject();
     }
 
@@ -49,7 +49,7 @@ public class JwtTokenUtil {
     }
 
     private boolean isTokenExpired(String token) {
-        final Date expiration = Jwts.parserBuilder().setSigningKey(getSigningKey()).build()
+        final Date expiration = Jwts.parser().setSigningKey(getSigningKey()).build()
                 .parseClaimsJws(token).getBody().getExpiration();
         return expiration.before(new Date());
     }

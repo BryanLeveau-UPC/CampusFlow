@@ -1,6 +1,5 @@
 package com.upc.campusflow.Security;
 
-import com.upc.authjwt20251.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +21,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    private UserService userService;
+    private CustomUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -35,11 +34,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
-            username = jwtTokenUtil.getUsernameFromToken(jwt);
+            try {
+                username = jwtTokenUtil.getUsernameFromToken(jwt);
+            } catch (Exception e) {
+                logger.warn("Error al extraer el username del token: " + e.getMessage());
+            }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userService.loadUserByUsername(username);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
             if (jwtTokenUtil.validateToken(jwt, userDetails.getUsername())) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
