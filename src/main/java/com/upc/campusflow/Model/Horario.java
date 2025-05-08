@@ -25,5 +25,5 @@ public class Horario {
 
     @OneToMany(mappedBy = "horario", cascade  = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Asignatura> asignaturas;
-    private boolean Estado;
+    private boolean Estado = true;
 }

@@ -33,5 +33,5 @@ public class Evento {
     @ManyToMany
     @JoinColumn(name = "idEstudiantes")
     private List<Estudiante> estudiantes;
-
+    private boolean Estado = true;
 }

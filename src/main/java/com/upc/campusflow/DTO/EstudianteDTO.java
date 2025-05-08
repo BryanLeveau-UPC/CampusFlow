@@ -29,6 +29,7 @@ public class EstudianteDTO {
     private Long usuarios;
 
     private List<Evento> eventos;
+    private boolean Estado;
 
     private boolean Estado;
 

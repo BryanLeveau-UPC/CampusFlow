@@ -20,6 +20,6 @@ public class Nota {
     @ManyToOne
     @JoinColumn(name = "id_asignatura")
     private Asignatura Asignatura;
-    private boolean Estado;
+    private boolean Estado = true;
 
 }

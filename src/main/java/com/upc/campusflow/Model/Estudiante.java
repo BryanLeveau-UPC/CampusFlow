@@ -33,8 +33,6 @@ public class Estudiante {
 
     @ManyToMany(mappedBy = "Estudiantes")
     private List<Evento> eventos;
-
-    private boolean estado = true;
-
+    private boolean Estado = true;
 
 }

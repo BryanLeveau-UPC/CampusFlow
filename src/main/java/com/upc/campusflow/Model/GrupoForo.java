@@ -17,7 +17,7 @@ public class GrupoForo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-
     @OneToMany(mappedBy = "idGrupoForo")
     private List<Publicacion> Publicaciones;
+    private boolean Estado = true;
 }

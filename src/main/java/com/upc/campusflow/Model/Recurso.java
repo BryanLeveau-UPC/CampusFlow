@@ -19,4 +19,5 @@ public class Recurso {
     private String tipoArchivo;
     private String url;
     private Date fechaSubida;
+    private boolean Estado = true;
 }
