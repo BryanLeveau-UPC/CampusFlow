@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -15,8 +17,18 @@ public class Usuario {
     private Long idUsuario;
     private String nombre;
     private String apellido;
+    @Column(nullable = false, unique = true)
     private String email;
+    @Column(nullable = false, unique = true)
+    private String username;
+    @Column(nullable = false, unique = true)
     private String password;
+
+    //Relaciones
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_usuario")
+    private List<Rol> roles;
+
     @OneToOne
     @JoinColumn(name = "id_estudiante")
     private Estudiante Estudiante;
