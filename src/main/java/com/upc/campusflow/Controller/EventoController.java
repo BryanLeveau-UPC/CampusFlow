@@ -40,4 +40,16 @@ public class EventoController {
         log.info("Guardando evento: " + eventoDTO.toString());
         return ResponseEntity.status(HttpStatus.CREATED).body(eventoService.guardar(eventoDTO));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EventoDTO> modificar(@PathVariable Long id, @RequestBody EventoDTO eventoDTO) {
+        EventoDTO actualizado = eventoService.modificar(id, eventoDTO);
+        return ResponseEntity.ok(actualizado);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<EventoDTO> eliminar(@PathVariable Long id) {
+        EventoDTO eliminado = eventoService.eliminar(id);
+        return ResponseEntity.ok(eliminado);
+    }
 }

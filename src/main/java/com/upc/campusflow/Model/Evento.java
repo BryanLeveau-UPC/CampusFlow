@@ -22,6 +22,7 @@ public class Evento {
     private LocalDate FechaFin;
     private String Descripcion;
     private int PuntajeRecompensa;
+    private boolean Estado;
 
 
     @ManyToOne

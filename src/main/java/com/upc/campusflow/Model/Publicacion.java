@@ -19,6 +19,7 @@ public class Publicacion {
     private String Contenido;
     private LocalDate Fecha;
     private String label;
+    private boolean Estado;
 
     @ManyToOne
     @JoinColumn(name = "IdGrupoF")

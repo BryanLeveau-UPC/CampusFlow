@@ -22,13 +22,15 @@ public class EstudianteDTO {
 
     private int Ciclo;
 
-    private Carrera idCarreras;
+    private Long idCarreras;
 
-    private EstudianteEstadistica estudianteEstadistica;
+    private Long estudianteEstadistica;
 
-    private Usuario usuarios;
+    private Long usuarios;
 
     private List<Evento> eventos;
+    private boolean Estado;
+
     private boolean Estado;
 
 }
