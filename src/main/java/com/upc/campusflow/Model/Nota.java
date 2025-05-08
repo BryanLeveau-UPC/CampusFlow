@@ -19,7 +19,7 @@ public class Nota {
     private double Peso_Nota;
     @ManyToOne
     @JoinColumn(name = "id_asignatura")
-    private Asignatura Asignatura;
+    private Asignatura asignatura;
     private boolean Estado = true;
 
 }
