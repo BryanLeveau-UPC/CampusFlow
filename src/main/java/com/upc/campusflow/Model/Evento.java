@@ -30,7 +30,11 @@ public class Evento {
 
 
     @ManyToMany
-    @JoinColumn(name = "idEstudiantes")
+    @JoinTable(
+            name = "evento_estudiante",
+            joinColumns = @JoinColumn(name = "evento_id"),
+            inverseJoinColumns = @JoinColumn(name = "estudiante_id")
+    )
     private List<Estudiante> estudiantes;
     private boolean Estado = true;
 }
