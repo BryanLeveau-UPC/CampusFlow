@@ -15,10 +15,11 @@ public class Carrera {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCarrera;
-
+    private String Nombre;
     @OneToMany(mappedBy = "carrera", cascade  = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Asignatura> asignaturas;
 
     @OneToMany(mappedBy = "idCarreras")
     private List<Estudiante> estudiantes;
+    private boolean Estado;
 }
