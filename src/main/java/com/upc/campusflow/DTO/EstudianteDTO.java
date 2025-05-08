@@ -25,12 +25,8 @@ public class EstudianteDTO {
     private Long idCarreras;
 
     private Long estudianteEstadistica;
-
+    private Long id_carrera;
     private Long usuarios;
-
-    private List<Evento> eventos;
-    private boolean Estado;
-
     private boolean Estado;
 
 }
