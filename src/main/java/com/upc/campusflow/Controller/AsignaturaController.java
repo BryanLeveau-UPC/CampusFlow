@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/asignatura")
 public class AsignaturaController {
     final AsignaturaService asignaturaService;
