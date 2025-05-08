@@ -21,7 +21,7 @@ public class Estudiante {
 
     @ManyToOne
     @JoinColumn(name = "idCarrera")
-    private Carrera idCarreras;
+    private Carrera carrera;
 
 
     @OneToOne
@@ -34,9 +34,5 @@ public class Estudiante {
     @ManyToMany(mappedBy = "estudiantes")
     private List<Evento> eventos;
     private boolean Estado = true;
-
-    @ManyToOne
-    @JoinColumn(name = "idCarrera")
-    private Carrera carrera;
 
 }

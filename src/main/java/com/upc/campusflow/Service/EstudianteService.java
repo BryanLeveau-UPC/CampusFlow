@@ -60,7 +60,7 @@ public class EstudianteService {
         if (estudianteDTO.getIdCarreras() != null) {
             Carrera carrera = new Carrera();
             carrera.setIdCarrera(estudianteDTO.getIdCarreras());
-            existente.setIdCarreras(carrera);
+            existente.setCarrera(carrera);
         }
 
         if (estudianteDTO.getEstudianteEstadistica() != null) {

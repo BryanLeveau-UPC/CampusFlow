@@ -17,6 +17,6 @@ public class Recompensa {
     private String URL;
     @ManyToOne
     @JoinColumn(name = "id_EstudianteEstadistica")
-    private EstudianteEstadistica EstudianteEstadistica;
+    private EstudianteEstadistica estudianteEstadistica;
     private boolean Estado = true;
 }

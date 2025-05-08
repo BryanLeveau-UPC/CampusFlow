@@ -23,7 +23,7 @@ public class Publicacion {
 
     @ManyToOne
     @JoinColumn(name = "idGrupoForo")
-    private GrupoForo idGrupoForo;
+    private GrupoForo grupoForo;
 
 
 }
