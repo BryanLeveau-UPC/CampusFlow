@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -15,9 +16,16 @@ public class GrupoForo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
-
+    private Long IdGrupoForo;
+    private String Titulo;
+    private String Descripcion;
+    private String Campo;
+    private Date FechaCreacion;
+    @OneToOne
+    @JoinColumn(name = "id_Asigneatura")
+    private Asignatura asignatura;
     @OneToMany(mappedBy = "idGrupoForo")
     private List<Publicacion> Publicaciones;
+
     private boolean Estado = true;
 }

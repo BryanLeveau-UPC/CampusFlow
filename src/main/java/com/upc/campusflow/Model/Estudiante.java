@@ -35,4 +35,8 @@ public class Estudiante {
     private List<Evento> eventos;
     private boolean Estado = true;
 
+    @ManyToOne
+    @JoinColumn(name = "id_carrera")
+    private Carrera carrera;
+
 }

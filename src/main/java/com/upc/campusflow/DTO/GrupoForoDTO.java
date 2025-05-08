@@ -10,7 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GrupoForoDTO {
-    private long idGrupoForo;
+    private Long idGrupoForo;
     private String titulo;
     private String descripcion;
     private String campo;

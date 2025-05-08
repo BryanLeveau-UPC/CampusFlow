@@ -19,14 +19,8 @@ public class Carrera {
     private String Malla_curricular;
     @OneToMany(mappedBy = "carrera", cascade  = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Asignatura> asignaturas;
-
     @OneToMany(mappedBy = "idCarreras")
     private List<Estudiante> estudiantes;
+
     private boolean Estado = true;
-
-    public static boolean isEstado(Object o) {
-
-
-        return false;
-    }
 }
