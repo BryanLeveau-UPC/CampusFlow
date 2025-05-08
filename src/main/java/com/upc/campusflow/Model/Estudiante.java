@@ -36,7 +36,7 @@ public class Estudiante {
     private boolean Estado = true;
 
     @ManyToOne
-    @JoinColumn(name = "id_carrera")
+    @JoinColumn(name = "idCarrera")
     private Carrera carrera;
 
 }
