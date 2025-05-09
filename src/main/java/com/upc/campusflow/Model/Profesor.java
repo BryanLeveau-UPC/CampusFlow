@@ -17,9 +17,6 @@ public class Profesor {
     private Long idProfesor;
     private String especialidad;
     private String numColegiatura;
-    @OneToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario Usuario;
     private boolean Estado = true;
 
     @OneToMany(mappedBy = "IdProfe")

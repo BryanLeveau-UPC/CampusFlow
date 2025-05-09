@@ -28,9 +28,6 @@ public class ProfesorService {
         ModelMapper modelMapper = new ModelMapper();
         for(Profesor profesor : profesores){
             ProfesorDTO profesorDTO = modelMapper.map(profesor, ProfesorDTO.class);
-            if(profesorDTO.getId_Usuario() != null){
-                profesorDTO.setId_Usuario(profesor.getUsuario().getIdUsuario());
-            }
             profesorDTOS.add(profesorDTO);
         }
         return profesorDTOS;
@@ -40,11 +37,6 @@ public class ProfesorService {
     public ProfesorDTO guardar(ProfesorDTO profesorDTO){
         ModelMapper modelMapper = new ModelMapper();
         Profesor profesor = modelMapper.map(profesorDTO, Profesor.class);
-        if(profesorDTO.getId_Usuario()!= null){
-            Usuario usuario = new Usuario();
-            usuario.setIdUsuario(profesorDTO.getId_Usuario());
-            profesor.setUsuario(usuario);
-        }
         profesor = profesorRepository.save(profesor);
         profesorDTO = modelMapper.map(profesor, ProfesorDTO.class);
         return profesorDTO;
@@ -56,12 +48,6 @@ public class ProfesorService {
         ModelMapper modelMapper = new ModelMapper();
         Profesor exits = profesorRepository.findById(id).orElseThrow(() -> new RuntimeException("Profesor no encontrado con ID: " + id));
         modelMapper.map(profesorDTO, exits);
-
-        if(profesorDTO.getId_Usuario() != null){
-            Usuario usuario = new Usuario();
-            usuario.setIdUsuario(profesorDTO.getId_Usuario());
-            exits.setUsuario(usuario);
-        }
 
         Profesor actualize = profesorRepository.save(exits);
         ProfesorDTO dto =  modelMapper.map(actualize, ProfesorDTO.class);

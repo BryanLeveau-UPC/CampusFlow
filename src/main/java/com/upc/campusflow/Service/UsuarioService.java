@@ -1,11 +1,7 @@
 package com.upc.campusflow.Service;
 
-import com.upc.campusflow.DTO.ProfesorDTO;
 import com.upc.campusflow.DTO.UsuarioDTO;
-import com.upc.campusflow.Model.Nota;
-import com.upc.campusflow.Model.Profesor;
 import com.upc.campusflow.Model.Usuario;
-import com.upc.campusflow.Repository.ProfesorRepository;
 import com.upc.campusflow.Repository.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -16,11 +12,9 @@ import java.util.List;
 @Service
 public class UsuarioService {
     final UsuarioRepository usuarioRepository;
-    private final ProfesorRepository profesorRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, ProfesorRepository profesorRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
-        this.profesorRepository = profesorRepository;
     }
 
     //Listar

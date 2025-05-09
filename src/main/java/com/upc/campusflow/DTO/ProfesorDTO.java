@@ -15,7 +15,6 @@ public class ProfesorDTO {
     private Long idProfesor;
     private String especialidad;
     private String numColegiatura;
-    private Long id_Usuario;
     private boolean Estado;
 
 }
