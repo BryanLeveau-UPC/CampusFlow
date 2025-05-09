@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
@@ -52,5 +53,10 @@ public class EstudianteController {
     public ResponseEntity<EstudianteDTO> eliminar(@PathVariable Long id) {
         EstudianteDTO eliminado = estudianteService.eliminar(id);
         return ResponseEntity.ok(eliminado);
+    }
+
+    @GetMapping("/resumen/por-ciclo")
+    public Map<Integer, Long> resumenActivosPorCiclo() {
+        return estudianteService.resumenActivosPorCiclo();
     }
 }

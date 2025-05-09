@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -81,6 +83,16 @@ public class EstudianteService {
         entidad.setEstado(false);
         entidad = iEstudiante.save(entidad);
         return modelMapper.map(entidad, EstudianteDTO.class);
+    }
+
+    public Map<Integer, Long> resumenActivosPorCiclo() {
+        return iEstudiante
+                .countActiveByCiclo()
+                .stream()
+                .collect(Collectors.toMap(
+                        fila -> (Integer) fila[0],
+                        fila -> (Long)    fila[1]
+                ));
     }
 
 

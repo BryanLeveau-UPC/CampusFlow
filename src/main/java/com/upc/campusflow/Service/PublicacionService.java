@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PublicacionService {
@@ -79,5 +81,15 @@ public class PublicacionService {
         PublicacionDTO dto = modelMapper.map(publicacion, PublicacionDTO.class);
 
         return dto;
+    }
+
+    public Map<String, Long> resumenPorLabel() {
+        return publicacionRepository
+                .countByLabel()
+                .stream()
+                .collect(Collectors.toMap(
+                        arr -> (String) arr[0],
+                        arr -> (Long)   arr[1]
+                ));
     }
 }
