@@ -17,6 +17,8 @@ public class Estudiante {
     private long IdEstudiante;
 
     private int Ciclo;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Nota> notas;
 
 
     @ManyToOne
