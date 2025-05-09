@@ -20,5 +20,4 @@ public class UsuarioDTO {
     private String password;
     private Long id_Estudiante;
     private Long id_Profesor;
-    private boolean Estado;
 }

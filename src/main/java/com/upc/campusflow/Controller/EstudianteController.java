@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
@@ -34,6 +35,10 @@ public class EstudianteController {
         }
         return ResponseEntity.ok(estudianteDTO);
     }
+    @GetMapping("/promedio/menor-a-11")
+    public ResponseEntity<List<EstudianteDTO>> obtenerEstudiantesConNotaBaja() {
+        return ResponseEntity.ok(estudianteService.obtenerEstudiantesConNotaBaja());
+    }
 
     @PostMapping
     public ResponseEntity<EstudianteDTO> guardar(@RequestBody EstudianteDTO estudianteDTO) {
@@ -53,4 +58,9 @@ public class EstudianteController {
         EstudianteDTO eliminado = estudianteService.eliminar(id);
         return ResponseEntity.ok(eliminado);
     }
+/*
+    @GetMapping("/resumen/por-ciclo")
+    public Map<Integer, Long> resumenActivosPorCiclo() {
+        return estudianteService.resumenActivosPorCiclo();
+    }*/
 }
