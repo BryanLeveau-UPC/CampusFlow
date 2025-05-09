@@ -85,7 +85,7 @@ public class EstudianteService {
         entidad = iEstudiante.save(entidad);
         return modelMapper.map(entidad, EstudianteDTO.class);
     }
-
+/*
     public Map<Integer, Long> resumenActivosPorCiclo() {
         return iEstudiante
                 .countActiveByCiclo()
@@ -95,7 +95,7 @@ public class EstudianteService {
                         fila -> (Long)    fila[1]
                 ));
     }
-
+*/
 
     public List<EstudianteDTO> obtenerEstudiantesConNotaBaja() {
         List<Estudiante> estudiantes = iEstudiante.findEstudiantesConNotaMenorA11();
