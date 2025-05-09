@@ -1,7 +1,5 @@
 package com.upc.campusflow.Controller;
 
-
-import com.upc.campusflow.DTO.ProfesorDTO;
 import com.upc.campusflow.DTO.UsuarioDTO;
 import com.upc.campusflow.Service.UsuarioService;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +38,5 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDTO> eliminarLogico(@PathVariable Long id) {
         return ResponseEntity.ok(usuarioService.eliminar(id));
     }
-
-
 
 }
