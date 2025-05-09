@@ -9,6 +9,7 @@ import com.upc.campusflow.Security.JwtTokenUtil;
 import com.upc.campusflow.DTO.AuthRequest;
 import com.upc.campusflow.DTO.AuthResponse;
 import com.upc.campusflow.DTO.RegisterRequest;
+import com.upc.campusflow.Service.RolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
@@ -16,7 +17,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.Collections;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -29,6 +32,9 @@ public class AuthController {
     private final UsuarioRepository usuarioRepository;
     private final RolRepository rolRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RolService rolService;
+
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
@@ -55,8 +61,13 @@ public class AuthController {
             return ResponseEntity.badRequest().body("El usuario ya existe");
         }
 
-        Rol rolUsuario = rolRepository.findByNombre("ROLE_USUARIO")
-                .orElseGet(() -> rolRepository.save(new Rol(null, "ROLE_USUARIO", null)));
+        // Obtener o crear el rol
+        Rol rolUsuario = rolService.obtenerOCrearRol(request.getNombre());
+
+        // Si el rol no existe y no se pudo crear
+        if (rolUsuario == null) {
+            return ResponseEntity.badRequest().body("Error al asignar el rol");
+        }
 
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setUsername(request.getUsername());
@@ -65,7 +76,7 @@ public class AuthController {
         nuevoUsuario.setNombre(request.getNombre());
         nuevoUsuario.setApellido(request.getApellido());
         nuevoUsuario.setEstado(true);
-        nuevoUsuario.setRoles(Collections.singletonList(rolUsuario)); // se asigna automáticamente
+        nuevoUsuario.setRoles(Collections.singletonList(rolUsuario));
 
         usuarioRepository.save(nuevoUsuario);
 

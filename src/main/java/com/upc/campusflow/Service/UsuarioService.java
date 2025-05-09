@@ -1,6 +1,7 @@
 package com.upc.campusflow.Service;
 
 import com.upc.campusflow.DTO.UsuarioDTO;
+import com.upc.campusflow.Model.Rol;
 import com.upc.campusflow.Model.Usuario;
 import com.upc.campusflow.Repository.UsuarioRepository;
 import org.modelmapper.ModelMapper;
@@ -12,9 +13,11 @@ import java.util.List;
 @Service
 public class UsuarioService {
     final UsuarioRepository usuarioRepository;
+    final RolService rolService;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, RolService rolService) {
         this.usuarioRepository = usuarioRepository;
+        this.rolService = rolService;
     }
 
     //Listar
@@ -34,9 +37,19 @@ public class UsuarioService {
     public UsuarioDTO guardar(UsuarioDTO usuarioDTO){
         ModelMapper modelMapper = new ModelMapper();
         Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
-        usuario = usuarioRepository.save(usuario);
-        usuarioDTO = modelMapper.map(usuario, UsuarioDTO.class);
-        return usuarioDTO;
+
+        // Crear una lista y añadir el rol
+        List<Rol> rolesList = new ArrayList<>();
+        Rol rol = rolService.buscarRolPorNombre(usuarioDTO.getNombre());
+        if (rol != null) {
+            rolesList.add(rol);
+        }
+        // Asignar la lista de roles
+        usuario.setRoles(rolesList);
+        usuario.setEstado(true);
+
+        Usuario savedUsuario = usuarioRepository.save(usuario);
+        return modelMapper.map(savedUsuario, UsuarioDTO.class);
     }
 
     //Modificar
