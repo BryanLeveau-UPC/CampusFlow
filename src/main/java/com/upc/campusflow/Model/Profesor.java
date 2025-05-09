@@ -21,6 +21,7 @@ public class Profesor {
 
     @OneToMany(mappedBy = "IdProfe")
     private List<Evento> idEventos;
-
+    @OneToOne(mappedBy = "profesor")
+    private Usuario usuarios;
 
 }
