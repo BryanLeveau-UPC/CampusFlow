@@ -6,6 +6,7 @@ import com.upc.campusflow.Model.Estudiante;
 import com.upc.campusflow.Model.EstudianteEstadistica;
 import com.upc.campusflow.Repository.EstudianteRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -84,5 +85,13 @@ public class EstudianteService {
     }
 
 
-
+    public List<EstudianteDTO> obtenerEstudiantesConNotaBaja() {
+        List<Estudiante> estudiantes = iEstudiante.findEstudiantesConNotaMenorA11();
+        ModelMapper modelMapper = new ModelMapper();
+        List<EstudianteDTO> dtoList = new ArrayList<>();
+        for (Estudiante e : estudiantes) {
+            dtoList.add(modelMapper.map(e, EstudianteDTO.class));
+        }
+        return dtoList;
+    }
 }
