@@ -19,8 +19,8 @@ public class Profesor {
     private String numColegiatura;
     private boolean Estado = true;
 
-    @OneToMany(mappedBy = "IdProfe")
-    private List<Evento> idEventos;
+    @OneToMany(mappedBy = "profesor")
+    private List<Evento> eventos;
     @OneToOne(mappedBy = "profesor")
     private Usuario usuarios;
 

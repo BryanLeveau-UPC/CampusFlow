@@ -26,7 +26,7 @@ public class Evento {
 
     @ManyToOne
     @JoinColumn(name = "IdProfesor")
-    private Profesor IdProfe;
+    private Profesor profesor;
 
 
     @ManyToMany

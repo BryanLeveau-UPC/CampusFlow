@@ -24,6 +24,6 @@ public class EventoDTO {
     private LocalDate FechaFin;
     private String Descripcion;
     private int PuntajeRecompensa;
-    private Profesor IdProfe;
+    private Long idProfesor;
     private boolean Estado;
 }

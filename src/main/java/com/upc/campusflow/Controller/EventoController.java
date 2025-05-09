@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.logging.Logger;
+@CrossOrigin
 
 @RestController
 @RequestMapping("/Evento")
@@ -52,4 +53,10 @@ public class EventoController {
         EventoDTO eliminado = eventoService.eliminar(id);
         return ResponseEntity.ok(eliminado);
     }
+//QUERY: LISTAR EVENTOS POR PROFESOR
+    @GetMapping("/profesor/{id}")
+    public ResponseEntity<List<EventoDTO>> listarPorProfesor(@PathVariable Long id) {
+        return ResponseEntity.ok(eventoService.listarPorProfesor(id));
+    }
+
 }
