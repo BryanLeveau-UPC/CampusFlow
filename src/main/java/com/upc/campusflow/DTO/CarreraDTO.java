@@ -17,7 +17,7 @@ import java.util.List;
 public class CarreraDTO {
 
     private Long idCarrera;
-    private int Nombre;
+    private String Nombre;
     private boolean Estado;
     private String Malla_curricular;
 
