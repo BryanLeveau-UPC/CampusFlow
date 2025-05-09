@@ -38,4 +38,11 @@ public class AsignaturaController {
     public ResponseEntity<AsignaturaDTO> eliminarLogico(@PathVariable Long id) {
         return ResponseEntity.ok(asignaturaService.eliminar(id));
     }
+
+    // Endpoint para obtener las 3 asignaturas con el mayor promedio
+    @GetMapping("/nota/top-3-promedio")
+    public List<AsignaturaDTO> obtenerTop3AsignaturasConMayorPromedio() {
+        return asignaturaService.obtenerTop3AsignaturasConMayorPromedio();
+    }
+
 }

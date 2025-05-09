@@ -35,6 +35,10 @@ public class EstudianteController {
         }
         return ResponseEntity.ok(estudianteDTO);
     }
+    @GetMapping("/promedio/menor-a-11")
+    public ResponseEntity<List<EstudianteDTO>> obtenerEstudiantesConNotaBaja() {
+        return ResponseEntity.ok(estudianteService.obtenerEstudiantesConNotaBaja());
+    }
 
     @PostMapping
     public ResponseEntity<EstudianteDTO> guardar(@RequestBody EstudianteDTO estudianteDTO) {

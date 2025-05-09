@@ -86,4 +86,25 @@ public class AsignaturaService {
         AsignaturaDTO dto = modelMapper.map(entidad, AsignaturaDTO.class);
         return  dto;
     }
+
+    public List<AsignaturaDTO> obtenerTop3AsignaturasConMayorPromedio() {
+        List<Asignatura> top3Asignaturas = asignaturaRepository.obtenerTop3AsignaturasPorPromedio();
+        List<AsignaturaDTO> asignaturaDTOS = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+
+        // Convertir las asignaturas a DTOs
+        for (Asignatura asignatura : top3Asignaturas) {
+            AsignaturaDTO asignaturaDTO = modelMapper.map(asignatura, AsignaturaDTO.class);
+
+            // Asegurarse de que la asignatura tenga carrera y horario, y asignar sus IDs
+            if (asignatura.getCarrera() != null && asignatura.getHorario() != null) {
+                asignaturaDTO.setId_carrera(asignatura.getCarrera().getIdCarrera());
+                asignaturaDTO.setId_horario(asignatura.getHorario().getIdHorario());
+            }
+
+            asignaturaDTOS.add(asignaturaDTO);
+        }
+
+        return asignaturaDTOS;
+    }
 }

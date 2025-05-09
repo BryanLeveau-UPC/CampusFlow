@@ -6,16 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface EstudianteRepository extends JpaRepository<Estudiante, Long> {
+public interface EstudianteRepository extends JpaRepository<Estudiante,Long> {
+    //Estudiantes con al menos una nota menor a 11
+    @Query("SELECT DISTINCT e FROM Estudiante e JOIN e.notas n " +
+            "WHERE n.Puntaje < 11")
+    List<Estudiante> findEstudiantesConNotaMenorA11();
 
-
-    /**   estudiantes activos por ciclo
-     */
-    @Query("""
-      SELECT e.ciclo AS ciclo, COUNT(e) AS total
-      FROM Estudiante e
-      WHERE e.estado = true
-      GROUP BY e.ciclo
-      """)
-    List<Object[]> countActiveByCiclo();
 }
