@@ -1,10 +1,7 @@
 package com.upc.campusflow.Service;
 
-import com.upc.campusflow.DTO.NotaDTO;
 import com.upc.campusflow.DTO.ProfesorDTO;
-import com.upc.campusflow.Model.Nota;
 import com.upc.campusflow.Model.Profesor;
-import com.upc.campusflow.Model.Usuario;
 import com.upc.campusflow.Repository.ProfesorRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

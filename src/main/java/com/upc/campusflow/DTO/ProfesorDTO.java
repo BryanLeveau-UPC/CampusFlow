@@ -1,8 +1,5 @@
 package com.upc.campusflow.DTO;
 
-import com.upc.campusflow.Model.Usuario;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
