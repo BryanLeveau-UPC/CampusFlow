@@ -9,9 +9,11 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecursoDTO {
-    private int idRecurso;
+    private Long idRecurso;
     private String tipoArchivo;
     private String url;
     private Date fechaSubida;
+    private Long id_tarea;
+    private Long id_publicacion;
     private boolean Estado;
 }
