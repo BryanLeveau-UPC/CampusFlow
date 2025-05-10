@@ -33,19 +33,17 @@ public class UsuarioService {
         return usuarioDTOS;
     }
 
-    //Guardar
     public UsuarioDTO guardar(UsuarioDTO usuarioDTO){
         ModelMapper modelMapper = new ModelMapper();
         Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
 
-        // Crear una lista y añadir el rol
-        List<Rol> rolesList = new ArrayList<>();
-        Rol rol = rolService.buscarRolPorNombre(usuarioDTO.getNombre());
-        if (rol != null) {
-            rolesList.add(rol);
+        // Buscar el rol por ID
+        Rol rol = rolService.buscarRolPorId(usuarioDTO.getRolId());
+        if (rol == null) {
+            throw new RuntimeException("Rol no encontrado con ID: " + usuarioDTO.getRolId());
         }
-        // Asignar la lista de roles
-        usuario.setRoles(rolesList);
+
+        usuario.setRoles(List.of(rol));
         usuario.setEstado(true);
 
         Usuario savedUsuario = usuarioRepository.save(usuario);
