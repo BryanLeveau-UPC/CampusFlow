@@ -1,7 +1,21 @@
 FROM eclipse-temurin:21-alpine
 
-COPY target/CampusFlow-0.0.1-SNAPSHOT.jar app.jar
+# Instala dependencias necesarias para ejecutar Maven
+RUN apk add --no-cache bash curl
 
+WORKDIR /app
+
+# Copia todo el proyecto al contenedor
+COPY . .
+
+# Da permisos de ejecución al wrapper de Maven
+RUN chmod +x mvnw
+
+# Compila el proyecto (sin ejecutar tests)
+RUN ./mvnw clean package -DskipTests
+
+# Expone el puerto que usará la app
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+# Ejecuta el .jar generado
+ENTRYPOINT ["java", "-jar", "target/CampusFlow-0.0.1-SNAPSHOT.jar"]

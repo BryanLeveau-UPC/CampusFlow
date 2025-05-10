@@ -23,10 +23,10 @@ public class EventoService {
         Evento evento = modelMapper.map(eventoDTO, Evento.class);
 
 
-        if (eventoDTO.getIdProfe() != null) {
+        if (eventoDTO.getIdProfesor() != null) {
             Profesor profesor = new Profesor();
             profesor.setIdProfesor(eventoDTO.getId());
-            evento.setIdProfe(profesor);
+            evento.setProfesor(profesor);
         }
 
         evento = iEventoRepository.save(evento);
@@ -39,8 +39,8 @@ public class EventoService {
 
         ModelMapper modelMapper = new ModelMapper();
         EventoDTO eventoDTO = modelMapper.map(evento, EventoDTO.class);
-        if (evento.getIdProfe() != null) {
-            eventoDTO.setId(evento.getIdProfe().getIdProfesor());
+        if (evento.getProfesor() != null) {
+            eventoDTO.setId(evento.getProfesor().getIdProfesor());
         }
         return eventoDTO;
     }
@@ -67,10 +67,10 @@ public class EventoService {
 
         modelMapper.map(eventoDTO, existente); // Copia los nuevos datos
 
-        if (eventoDTO.getIdProfe() != null) {
+        if (eventoDTO.getIdProfesor() != null) {
             Profesor profe = new Profesor();
             profe.setIdProfesor(eventoDTO.getId());
-            existente.setIdProfe(profe);
+            existente.setProfesor(profe);
         }
 
         Evento actualizado = iEventoRepository.save(existente);
@@ -88,6 +88,17 @@ public class EventoService {
         return modelMapper.map(evento, EventoDTO.class);
     }
 
-
+    //listar eventos por profesor id QUERY
+    public List<EventoDTO> listarPorProfesor(Long idProfesor) {
+        List<Evento> eventos = iEventoRepository.findEventosByProfesorId(idProfesor);
+        List<EventoDTO> eventoDTOs = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+        for (Evento evento : eventos) {
+            EventoDTO dto = modelMapper.map(evento, EventoDTO.class);
+            dto.setIdProfesor(evento.getProfesor().getIdProfesor()); // Asegura que el ID del profesor se incluya
+            eventoDTOs.add(dto);
+        }
+        return eventoDTOs;
+    }
 
 }
