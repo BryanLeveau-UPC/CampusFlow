@@ -13,9 +13,7 @@ public class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRol;
-    private String nombre;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
+    @Column(unique = true, nullable = false)
+    private String nombre; // "ADMIN", "ESTUDIANTE", "PROFESOR"
 }

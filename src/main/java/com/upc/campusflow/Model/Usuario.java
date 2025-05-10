@@ -32,13 +32,9 @@ public class Usuario implements UserDetails {
     private String password;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "usuario_rol",
-            joinColumns = @JoinColumn(name = "id_usuario"),
-            inverseJoinColumns = @JoinColumn(name = "id_rol")
-    )
-    private List<Rol> roles;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_rol", nullable = false)
+    private Rol rol;
 
     @OneToOne
     @JoinColumn(name = "id_estudiante")
@@ -53,9 +49,7 @@ public class Usuario implements UserDetails {
     // Implementación de métodos de UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(rol -> new SimpleGrantedAuthority(rol.getNombre()))
-                .collect(Collectors.toList());
+        return List.of(new SimpleGrantedAuthority(rol.getNombre()));
     }
 
     @Override

@@ -33,7 +33,8 @@ public class UsuarioService {
         return usuarioDTOS;
     }
 
-    public UsuarioDTO guardar(UsuarioDTO usuarioDTO){
+    // Guardar usuario
+    public UsuarioDTO guardar(UsuarioDTO usuarioDTO) {
         ModelMapper modelMapper = new ModelMapper();
         Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
 
@@ -43,11 +44,13 @@ public class UsuarioService {
             throw new RuntimeException("Rol no encontrado con ID: " + usuarioDTO.getRolId());
         }
 
-        usuario.setRoles(List.of(rol));
+        // Asignar el rol único al usuario
+        usuario.setRol(rol);
         usuario.setEstado(true);
 
         Usuario savedUsuario = usuarioRepository.save(usuario);
-        return modelMapper.map(savedUsuario, UsuarioDTO.class);
+        UsuarioDTO dto = modelMapper.map(savedUsuario, UsuarioDTO.class);
+        return dto;
     }
 
     //Modificar

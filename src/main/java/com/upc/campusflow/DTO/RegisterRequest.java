@@ -9,5 +9,5 @@ public class RegisterRequest {
     private String email;
     private String nombre;
     private String apellido;
-    private String roles;
+    private Long rolId;  // Ahora recibimos el ID del rol
 }
