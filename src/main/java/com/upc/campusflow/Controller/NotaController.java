@@ -38,4 +38,10 @@ public class NotaController {
     public ResponseEntity<NotaDTO> eliminarLogico(@PathVariable Long id) {
         return ResponseEntity.ok(notaService.eliminar(id));
     }
+
+
+    @GetMapping("/asignatura/{id}")
+    public ResponseEntity<List<NotaDTO>> obtenerNotasPorAsignatura(@PathVariable("id") Long idAsignatura) {
+        return ResponseEntity.ok(notaService.obtenerNotasPorAsignatura(idAsignatura));
+    }
 }

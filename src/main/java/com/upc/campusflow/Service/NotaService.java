@@ -42,13 +42,17 @@ public class NotaService {
     public NotaDTO guardar(NotaDTO notaDTO) {
         ModelMapper modelMapper = new ModelMapper();
         Nota nota = modelMapper.map(notaDTO, Nota.class);
+
+        // Aquí es donde debes setear la Asignatura manualmente
         if (notaDTO.getId_asignatura() != null) {
             Asignatura asignatura = new Asignatura();
             asignatura.setIdAsignatura(notaDTO.getId_asignatura());
             nota.setAsignatura(asignatura);
         }
+
         nota = notaRepository.save(nota);
         notaDTO = modelMapper.map(nota, NotaDTO.class);
+        notaDTO.setId_asignatura(nota.getAsignatura().getIdAsignatura());
         return notaDTO;
     }
     //Modificar
@@ -78,6 +82,19 @@ public class NotaService {
         entidad =  notaRepository.save(entidad);
         NotaDTO dto = modelMapper.map(entidad, NotaDTO.class);
         return  dto;
+    }
+
+    //Listar notas por asignatura de alumno
+    public List<NotaDTO> obtenerNotasPorAsignatura(Long idAsignatura) {
+        List<Nota> notas = notaRepository.findNotasByAsignaturaId(idAsignatura);
+        List<NotaDTO> notaDTOS = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+        for (Nota nota : notas) {
+            NotaDTO notaDTO = modelMapper.map(nota, NotaDTO.class);
+            notaDTO.setId_asignatura(nota.getAsignatura().getIdAsignatura());
+            notaDTOS.add(notaDTO);
+        }
+        return notaDTOS;
     }
 
 }
