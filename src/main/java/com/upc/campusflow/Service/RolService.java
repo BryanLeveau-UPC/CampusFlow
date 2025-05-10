@@ -23,9 +23,9 @@ public class RolService {
     }
 
 
-    public Rol buscarRolPorNombre(String nombre) {
-        List<Rol> roles = rolRepository.findByNombre(nombre);
-        return roles.isEmpty() ? null : roles.get(0); // Devuelve el primero si existe
+    public Rol buscarRolPorId(Long id) {
+        return rolRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado con ID: " + id));
     }
 
     // Crear rol si no existe

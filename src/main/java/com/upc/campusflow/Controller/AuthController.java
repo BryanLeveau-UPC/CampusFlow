@@ -58,18 +58,20 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        // Verificar si el nombre de usuario ya existe
         if (usuarioRepository.findByUsername(request.getUsername()).isPresent()) {
             return ResponseEntity.badRequest().body("El usuario ya existe");
         }
 
-        // Obtener o crear el rol
-        Rol rolUsuario = rolService.obtenerOCrearRol(request.getNombre());
+        // Buscar el rol por ID
+        Rol rolUsuario = rolRepository.findById(request.getRolId()).orElse(null);
 
-        // Si el rol no existe y no se pudo crear
+        // Si el rol no existe, devolver error
         if (rolUsuario == null) {
-            return ResponseEntity.badRequest().body("Error al asignar el rol");
+            return ResponseEntity.badRequest().body("Rol no encontrado");
         }
 
+        // Crear un nuevo usuario
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setUsername(request.getUsername());
         nuevoUsuario.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -77,10 +79,14 @@ public class AuthController {
         nuevoUsuario.setNombre(request.getNombre());
         nuevoUsuario.setApellido(request.getApellido());
         nuevoUsuario.setEstado(true);
-        nuevoUsuario.setRoles(Collections.singletonList(rolUsuario));
 
+        // Asignar el rol al nuevo usuario
+        nuevoUsuario.setRol(rolUsuario);  // Asignamos el rol basado en su ID
+
+        // Guardar el nuevo usuario
         usuarioRepository.save(nuevoUsuario);
 
+        // Devolver la respuesta
         return ResponseEntity.ok("Usuario registrado correctamente");
     }
 }
