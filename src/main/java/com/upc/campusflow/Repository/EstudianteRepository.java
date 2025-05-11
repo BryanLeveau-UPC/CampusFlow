@@ -1,6 +1,7 @@
 package com.upc.campusflow.Repository;
 
 import com.upc.campusflow.Model.Estudiante;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -11,5 +12,18 @@ public interface EstudianteRepository extends JpaRepository<Estudiante,Long> {
     @Query("SELECT DISTINCT e FROM Estudiante e JOIN e.notas n " +
             "WHERE n.Puntaje < 11")
     List<Estudiante> findEstudiantesConNotaMenorA11();
+
+    /**
+     * Ordena estudiantes por promedio de todas sus notas (de mayor a menor)
+     * y permite paginar para tomar, por ejemplo, el top N.
+     */
+    @Query("""
+      SELECT e
+      FROM Estudiante e
+      LEFT JOIN e.notas n
+      GROUP BY e.IdEstudiante
+      ORDER BY AVG(n.Puntaje) DESC
+    """)
+    List<Estudiante> findAllOrderByAverageNotaDesc(Pageable pageable);
 
 }

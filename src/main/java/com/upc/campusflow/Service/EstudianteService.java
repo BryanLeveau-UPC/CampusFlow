@@ -7,6 +7,7 @@ import com.upc.campusflow.Model.EstudianteEstadistica;
 import com.upc.campusflow.Repository.EstudianteRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -85,17 +86,7 @@ public class EstudianteService {
         entidad = iEstudiante.save(entidad);
         return modelMapper.map(entidad, EstudianteDTO.class);
     }
-/*
-    public Map<Integer, Long> resumenActivosPorCiclo() {
-        return iEstudiante
-                .countActiveByCiclo()
-                .stream()
-                .collect(Collectors.toMap(
-                        fila -> (Integer) fila[0],
-                        fila -> (Long)    fila[1]
-                ));
-    }
-*/
+
 
     public List<EstudianteDTO> obtenerEstudiantesConNotaBaja() {
         List<Estudiante> estudiantes = iEstudiante.findEstudiantesConNotaMenorA11();
@@ -105,5 +96,25 @@ public class EstudianteService {
             dtoList.add(modelMapper.map(e, EstudianteDTO.class));
         }
         return dtoList;
+    }
+
+
+    /**
+     * Devuelve el top 10% de estudiantes según promedio de notas.
+     */
+    private final ModelMapper mapper = new ModelMapper();
+
+    public List<EstudianteDTO> topDecilePorNota() {
+        long total = iEstudiante.count();
+        int decileCount = (int) Math.ceil(total * 0.1);
+        if (decileCount < 1) decileCount = 1;
+
+        // Página única con tamaño = decileCount
+        List<Estudiante> top = iEstudiante
+                .findAllOrderByAverageNotaDesc(PageRequest.of(0, decileCount));
+
+        return top.stream()
+                .map(e -> mapper.map(e, EstudianteDTO.class))
+                .toList();
     }
 }

@@ -58,9 +58,12 @@ public class EstudianteController {
         EstudianteDTO eliminado = estudianteService.eliminar(id);
         return ResponseEntity.ok(eliminado);
     }
-/*
-    @GetMapping("/resumen/por-ciclo")
-    public Map<Integer, Long> resumenActivosPorCiclo() {
-        return estudianteService.resumenActivosPorCiclo();
-    }*/
+
+
+    @GetMapping("/top-decimo")
+    public ResponseEntity<List<EstudianteDTO>> obtenerTopDecile() {
+        List<EstudianteDTO> lista = estudianteService.topDecilePorNota();
+        return ResponseEntity.ok(lista);
+    }
+
 }
