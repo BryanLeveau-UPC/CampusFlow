@@ -57,4 +57,17 @@ public class PublicacionController {
         Map<String, Long> resumen = publicacionService.resumenPorLabel();
         return ResponseEntity.ok(resumen);
     }
+
+    /**
+     * GET /publicaciones/grupo/{idGrupoForo}/label/{label}
+     * Filtra publicaciones por grupo de foro y label
+     */
+    @GetMapping("/grupo/{idGrupoForo}/label/{label}")
+    public ResponseEntity<List<PublicacionDTO>> listarPorGrupoYLabel(
+            @PathVariable Long idGrupoForo,
+            @PathVariable String label
+    ) {
+        List<PublicacionDTO> resultado = publicacionService.listarPorGrupoYLabel(idGrupoForo, label);
+        return ResponseEntity.ok(resultado);
+    }
 }

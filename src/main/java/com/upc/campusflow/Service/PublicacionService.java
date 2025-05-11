@@ -92,4 +92,19 @@ public class PublicacionService {
                         arr -> (Long)   arr[1]
                 ));
     }
+
+    /**
+     * Lista publicaciones de un grupo de foro con un label específico
+     */
+    public List<PublicacionDTO> listarPorGrupoYLabel(Long idGrupoForo, String label) {
+        List<Publicacion> publicaciones = publicacionRepository.findByGrupoForoAndLabel(idGrupoForo, label);
+        List<PublicacionDTO> dtos = new ArrayList<>();
+        ModelMapper mapper = new ModelMapper();
+        for (Publicacion p : publicaciones) {
+            PublicacionDTO dto = mapper.map(p, PublicacionDTO.class);
+            dto.setIdGrupoForo(p.getGrupoForo());
+            dtos.add(dto);
+        }
+        return dtos;
+    }
 }
