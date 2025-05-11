@@ -1,11 +1,14 @@
 package com.upc.campusflow.Service;
+
 import com.upc.campusflow.DTO.EventoDTO;
 import com.upc.campusflow.Model.Evento;
 import com.upc.campusflow.Model.Profesor;
 import com.upc.campusflow.Repository.EventoRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +25,9 @@ public class EventoService {
         ModelMapper modelMapper = new ModelMapper();
         Evento evento = modelMapper.map(eventoDTO, Evento.class);
 
-
         if (eventoDTO.getIdProfesor() != null) {
             Profesor profesor = new Profesor();
-            profesor.setIdProfesor(eventoDTO.getId());
+            profesor.setIdProfesor(eventoDTO.getIdProfesor());
             evento.setProfesor(profesor);
         }
 
@@ -40,7 +42,7 @@ public class EventoService {
         ModelMapper modelMapper = new ModelMapper();
         EventoDTO eventoDTO = modelMapper.map(evento, EventoDTO.class);
         if (evento.getProfesor() != null) {
-            eventoDTO.setId(evento.getProfesor().getIdProfesor());
+            eventoDTO.setIdProfesor(evento.getProfesor().getIdProfesor());
         }
         return eventoDTO;
     }
@@ -65,11 +67,11 @@ public class EventoService {
             throw new RuntimeException("No se puede modificar un evento inactivo.");
         }
 
-        modelMapper.map(eventoDTO, existente); // Copia los nuevos datos
+        modelMapper.map(eventoDTO, existente);
 
         if (eventoDTO.getIdProfesor() != null) {
             Profesor profe = new Profesor();
-            profe.setIdProfesor(eventoDTO.getId());
+            profe.setIdProfesor(eventoDTO.getIdProfesor());
             existente.setProfesor(profe);
         }
 
@@ -77,7 +79,6 @@ public class EventoService {
         return modelMapper.map(actualizado, EventoDTO.class);
     }
 
-    // Eliminación lógica
     public EventoDTO eliminar(Long id) {
         ModelMapper modelMapper = new ModelMapper();
         Evento evento = iEventoRepository.findById(id)
@@ -88,17 +89,29 @@ public class EventoService {
         return modelMapper.map(evento, EventoDTO.class);
     }
 
-    //listar eventos por profesor id QUERY
     public List<EventoDTO> listarPorProfesor(Long idProfesor) {
         List<Evento> eventos = iEventoRepository.findEventosByProfesorId(idProfesor);
         List<EventoDTO> eventoDTOs = new ArrayList<>();
         ModelMapper modelMapper = new ModelMapper();
         for (Evento evento : eventos) {
             EventoDTO dto = modelMapper.map(evento, EventoDTO.class);
-            dto.setIdProfesor(evento.getProfesor().getIdProfesor()); // Asegura que el ID del profesor se incluya
+            dto.setIdProfesor(evento.getProfesor().getIdProfesor());
             eventoDTOs.add(dto);
         }
         return eventoDTOs;
     }
 
+    public List<EventoDTO> proximos5EventosDeEstudiante(Long idEstudiante) {
+        List<Evento> eventos = iEventoRepository.findNext5EventosByEstudiante(
+                idEstudiante,
+                LocalDate.now(),
+                PageRequest.of(0, 5)
+        );
+        List<EventoDTO> eventosDTO = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+        for (Evento evento : eventos) {
+            eventosDTO.add(modelMapper.map(evento, EventoDTO.class));
+        }
+        return eventosDTO;
+    }
 }

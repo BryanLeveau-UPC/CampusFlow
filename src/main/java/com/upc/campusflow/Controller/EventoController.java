@@ -59,4 +59,10 @@ public class EventoController {
         return ResponseEntity.ok(eventoService.listarPorProfesor(id));
     }
 
+    //QUERY: Proximos5eventosDeEstudiante
+    @GetMapping("/estudiante/{id}/proximos5")
+    public ResponseEntity<List<EventoDTO>> proximos5(@PathVariable Long id) {
+        return ResponseEntity.ok(eventoService.proximos5EventosDeEstudiante(id));
+    }
+
 }
