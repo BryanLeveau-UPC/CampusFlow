@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -116,5 +117,13 @@ public class EstudianteService {
         return top.stream()
                 .map(e -> mapper.map(e, EstudianteDTO.class))
                 .toList();
+    }
+
+    public List<EstudianteDTO> obtenerEstudiantesPorRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        List<Estudiante> estudiantes = iEstudiante.obtenerEstudiantesPorRangoDeFechas(fechaInicio, fechaFin);
+        ModelMapper modelMapper = new ModelMapper();
+        return estudiantes.stream()
+                .map(e -> modelMapper.map(e, EstudianteDTO.class))
+                .collect(Collectors.toList());
     }
 }

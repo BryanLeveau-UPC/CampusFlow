@@ -2,10 +2,12 @@ package com.upc.campusflow.Controller;
 
 import com.upc.campusflow.DTO.EstudianteDTO;
 import com.upc.campusflow.Service.EstudianteService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -64,6 +66,12 @@ public class EstudianteController {
     public ResponseEntity<List<EstudianteDTO>> obtenerTopDecile() {
         List<EstudianteDTO> lista = estudianteService.topDecilePorNota();
         return ResponseEntity.ok(lista);
+    }
+
+    @GetMapping("/estudiantes/eventos")
+    public ResponseEntity<List<EstudianteDTO>> obtenerEstudiantesPorFechas(@RequestParam("inicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
+                                                                           @RequestParam("fin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fin){
+        return ResponseEntity.ok(estudianteService.obtenerEstudiantesPorRangoDeFechas(inicio, fin));
     }
 
 }

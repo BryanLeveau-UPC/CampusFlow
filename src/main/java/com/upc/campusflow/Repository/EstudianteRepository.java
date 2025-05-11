@@ -1,10 +1,13 @@
 package com.upc.campusflow.Repository;
 
 import com.upc.campusflow.Model.Estudiante;
+import com.upc.campusflow.Model.Evento;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface EstudianteRepository extends JpaRepository<Estudiante,Long> {
@@ -25,5 +28,15 @@ public interface EstudianteRepository extends JpaRepository<Estudiante,Long> {
       ORDER BY AVG(n.Puntaje) DESC
     """)
     List<Estudiante> findAllOrderByAverageNotaDesc(Pageable pageable);
+
+    //Obtener todos los estudiantes que han participado en eventos entre dos fechas
+    @Query("SELECT DISTINCT e " +
+            "FROM Estudiante e " +
+            "JOIN e.eventos ev " +
+            "WHERE ev.FechaInicio " +
+            "BETWEEN :fechaInicio " +
+            "AND :fechaFin " +
+            "AND ev.Estado = true")
+    List<Estudiante> obtenerEstudiantesPorRangoDeFechas(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
 
 }
