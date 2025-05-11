@@ -44,4 +44,14 @@ public class NotaController {
     public ResponseEntity<List<NotaDTO>> obtenerNotasPorAsignatura(@PathVariable("id") Long idAsignatura) {
         return ResponseEntity.ok(notaService.obtenerNotasPorAsignatura(idAsignatura));
     }
+
+    // Obtener notas de un estudiante dentro de un rango de puntaje
+    @GetMapping("/estudiante/{idEstudiante}/rango")
+    public ResponseEntity<List<NotaDTO>> obtenerNotasPorEstudianteYRangoPuntaje(
+            @PathVariable Long idEstudiante,
+            @RequestParam double puntajeMinimo,
+            @RequestParam double puntajeMaximo) {
+        List<NotaDTO> notas = notaService.obtenerNotasPorEstudianteYRangoPuntaje(idEstudiante, puntajeMinimo, puntajeMaximo);
+        return ResponseEntity.ok(notas);
+    }
 }

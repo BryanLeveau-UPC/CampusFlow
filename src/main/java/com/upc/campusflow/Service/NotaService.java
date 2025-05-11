@@ -97,4 +97,20 @@ public class NotaService {
         return notaDTOS;
     }
 
+    // Listar notas de un estudiante en un rango de puntaje
+    public List<NotaDTO> obtenerNotasPorEstudianteYRangoPuntaje(Long idEstudiante, double puntajeMinimo, double puntajeMaximo) {
+        List<Nota> notas = notaRepository.findByEstudianteIdAndPuntajeBetween(idEstudiante, puntajeMinimo, puntajeMaximo);
+        List<NotaDTO> notaDTOS = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+        for (Nota nota : notas) {
+            NotaDTO notaDTO = modelMapper.map(nota, NotaDTO.class);
+            if (nota.getAsignatura() != null) {
+                notaDTO.setId_asignatura(nota.getAsignatura().getIdAsignatura());
+            }
+            notaDTOS.add(notaDTO);
+        }
+        return notaDTOS;
+    }
+
+
 }
