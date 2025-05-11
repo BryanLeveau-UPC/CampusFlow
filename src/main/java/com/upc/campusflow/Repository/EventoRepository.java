@@ -33,4 +33,15 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
             @Param("fechaActual") LocalDate fechaActual,
             Pageable pageable
     );
+
+    /**
+     * Top 3 eventos con mayor número de estudiantes inscritos.
+     */
+    @Query(
+            "SELECT ev FROM Evento ev LEFT JOIN ev.estudiantes e " +
+                    "WHERE ev.Estado = true " +
+                    "GROUP BY ev " +
+                    "ORDER BY COUNT(e) DESC"
+    )
+    List<Evento> findTop3EventosByParticipacion(Pageable pageable);
 }

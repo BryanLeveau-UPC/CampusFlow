@@ -114,4 +114,18 @@ public class EventoService {
         }
         return eventosDTO;
     }
+
+
+    private final ModelMapper mapper = new ModelMapper();
+    /**
+     * Devuelve los 3 eventos en los que más estudiantes participaron
+     */
+    public List<EventoDTO> top3EventosMasParticipacion() {
+        var eventos = iEventoRepository.findTop3EventosByParticipacion(PageRequest.of(0, 3));
+        List<EventoDTO> dtos = new ArrayList<>();
+        for (Evento ev : eventos) {
+            dtos.add(mapper.map(ev, EventoDTO.class));
+        }
+        return dtos;
+    }
 }
