@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 @CrossOrigin
 @RestController
-@RequestMapping("/Publicacion")
+@RequestMapping("/publicacion")
 public class PublicacionController {
 
     final PublicacionService publicacionService;

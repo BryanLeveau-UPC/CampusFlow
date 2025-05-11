@@ -53,12 +53,19 @@ public class SecurityConfig {
                         ).permitAll()
 
                         // Reglas específicas por rol
-                        .requestMatchers("/producto/agregar").hasAuthority("ADMIN")
-                        .requestMatchers("/producto/transferir").hasAuthority("ADMIN")
-                        .requestMatchers("/producto/listar").hasAuthority("USER")
-                        .requestMatchers("/producto/listar/**").hasAuthority("USER")
-                        .requestMatchers("/agregar").hasAuthority("ADMIN")
-                        .requestMatchers("/listar").hasAuthority("USER")
+                        .requestMatchers("/usuarios").hasAuthority("ADMIN")
+                        .requestMatchers("/tareas").hasAuthority("ADMIN")
+                        .requestMatchers("/recursos").hasAuthority("ADMIN")
+                        .requestMatchers("/publicacion").hasAuthority("ADMIN")
+                        .requestMatchers("/profesor").hasAuthority("ADMIN")
+                        .requestMatchers("/nota").hasAuthority("ADMIN")
+                        .requestMatchers("/horarios").hasAuthority("ADMIN")
+                        .requestMatchers("/grupoForo").hasAuthority("ADMIN")
+                        .requestMatchers("/evento").hasAuthority("ADMIN")
+                        .requestMatchers("/estudiante-estadística").hasAuthority("ADMIN")
+                        .requestMatchers("/estudiante").hasAuthority("ADMIN")
+                        .requestMatchers("/carrera").hasAuthority("ADMIN")
+                        .requestMatchers("/asignatura").hasAuthority("ADMIN")
 
                         // Cualquier otra petición requiere autenticación
                         .anyRequest().authenticated()

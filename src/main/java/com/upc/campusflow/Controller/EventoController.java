@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 @CrossOrigin
 
 @RestController
-@RequestMapping("/Evento")
+@RequestMapping("/evento")
 public class EventoController {
 
     final EventoService eventoService;
