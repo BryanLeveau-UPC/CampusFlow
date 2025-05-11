@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -69,5 +70,18 @@ public class PublicacionController {
     ) {
         List<PublicacionDTO> resultado = publicacionService.listarPorGrupoYLabel(idGrupoForo, label);
         return ResponseEntity.ok(resultado);
+    }
+
+    /**
+     * GET /publicaciones/grupo/{idGrupoForo}/fecha/{fecha}
+     * Filtra publicaciones por grupo de foro y fecha
+     */
+    @GetMapping("/grupo/{idGrupoForo}/fecha/{fecha}")
+    public ResponseEntity<List<PublicacionDTO>> listarPorGrupoYFecha(
+            @PathVariable Long idGrupoForo,
+            @PathVariable("fecha") String fecha
+    ) {
+        LocalDate date = LocalDate.parse(fecha);
+        return ResponseEntity.ok(publicacionService.listarPorGrupoYFecha(idGrupoForo, date));
     }
 }

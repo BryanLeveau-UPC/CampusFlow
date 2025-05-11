@@ -6,6 +6,7 @@ import com.upc.campusflow.Repository.PublicacionRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -100,6 +101,26 @@ public class PublicacionService {
         List<Publicacion> publicaciones = publicacionRepository.findByGrupoForoAndLabel(idGrupoForo, label);
         List<PublicacionDTO> dtos = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
+        for (Publicacion p : publicaciones) {
+            PublicacionDTO dto = mapper.map(p, PublicacionDTO.class);
+            dto.setIdGrupoForo(p.getGrupoForo());
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
+
+    /**
+     * Lista publicaciones filtradas por grupo de foro y fecha exacta
+     */
+    public List<PublicacionDTO> listarPorGrupoYFecha(Long idGrupoForo, LocalDate fecha) {
+        List<Publicacion> publicaciones = publicacionRepository.findByGrupoForoAndFecha(idGrupoForo, fecha);
+        return mapToDTO(publicaciones);
+    }
+
+    private List<PublicacionDTO> mapToDTO(List<Publicacion> publicaciones) {
+        ModelMapper mapper = new ModelMapper();
+        List<PublicacionDTO> dtos = new ArrayList<>();
         for (Publicacion p : publicaciones) {
             PublicacionDTO dto = mapper.map(p, PublicacionDTO.class);
             dto.setIdGrupoForo(p.getGrupoForo());
