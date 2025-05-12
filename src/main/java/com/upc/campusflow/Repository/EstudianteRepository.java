@@ -20,6 +20,9 @@ public interface EstudianteRepository extends JpaRepository<Estudiante,Long> {
      * Ordena estudiantes por promedio de todas sus notas (de mayor a menor)
      * y permite paginar para tomar, por ejemplo, el top N.
      */
+
+
+
     @Query("""
       SELECT e
       FROM Estudiante e

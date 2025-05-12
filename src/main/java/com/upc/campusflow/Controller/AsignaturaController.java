@@ -18,7 +18,9 @@ public class AsignaturaController {
     public AsignaturaController(AsignaturaService asignaturaService) {
         this.asignaturaService = asignaturaService;
     }
-    //listar
+    //listado
+
+
     @GetMapping
     public ResponseEntity<List<AsignaturaDTO>> Listar(){
         return ResponseEntity.ok(asignaturaService.Listar());

@@ -18,7 +18,8 @@ public class HorarioController {
         this.horarioService = horarioService;
     }
 
-    //listar
+    //listado
+
     @GetMapping
     public ResponseEntity<List<HorarioDTO>> listar(){
         return ResponseEntity.ok(horarioService.listar());

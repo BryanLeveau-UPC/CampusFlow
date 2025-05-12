@@ -17,10 +17,13 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
     @Query("SELECT e FROM Evento e WHERE e.profesor.idProfesor = :idProfesor")
     List<Evento> findEventosByProfesorId(@Param("idProfesor") Long idProfesor);
 
+
+
     /**
-     * Próximos 5 eventos para un estudiante,
-     * usando la propiedad exacta de la entidad Estudiante (IdEstudiante).
+     * Próximos 5 eventos presentes para un estudiante,
+     * usando la propiedad exacta de la entidad (IdEstudiante).
      */
+
     @Query(
             "SELECT ev " +
                     "FROM Evento ev JOIN ev.estudiantes e " +

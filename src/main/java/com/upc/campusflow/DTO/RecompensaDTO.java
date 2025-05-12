@@ -10,10 +10,6 @@ import lombok.NoArgsConstructor;
 public class RecompensaDTO {
     private Long IDRecompensa;
 
-
-
-
-
     private String Plataforma;
     private String URL;
     private Long id_EstudianteEstadistica;

@@ -28,6 +28,9 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDTO> guardar(@RequestBody UsuarioDTO usuarioDTO){
         return ResponseEntity.ok(usuarioService.guardar(usuarioDTO));
     }
+
+
+
     // Modificar
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDTO> modificar(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) {
