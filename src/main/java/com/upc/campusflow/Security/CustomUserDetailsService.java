@@ -3,6 +3,7 @@ package com.upc.campusflow.Security;
 import com.upc.campusflow.Model.Usuario;
 import com.upc.campusflow.Repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +23,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 usuario.getUsername(),
                 usuario.getPassword(),
-                usuario.isEstado(), // habilitado solo si estado = true
+                usuario.isEstado(),
                 true,
                 true,
                 true,
-                Collections.emptyList() // Aquí puedes añadir roles si los tuvieras
+                Collections.singletonList(
+                        new SimpleGrantedAuthority(usuario.getRol().getNombre()) // <- Aquí se añade el rol, como "ADMIN"
+                )
         );
     }
 }
