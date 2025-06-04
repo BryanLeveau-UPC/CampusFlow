@@ -21,6 +21,7 @@ public class Nota {
     @JoinColumn(name = "id_asignatura")
     private Asignatura asignatura;
     private boolean Estado = true;
+
     @ManyToOne
     @JoinColumn(name = "id_estudiante")
     private Estudiante estudiante;

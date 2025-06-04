@@ -36,5 +36,6 @@ public class Evento {
             inverseJoinColumns = @JoinColumn(name = "estudiante_id")
     )
     private List<Estudiante> estudiantes;
+
     private boolean Estado = true;
 }

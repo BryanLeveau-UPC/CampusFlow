@@ -21,7 +21,11 @@ public class Profesor {
 
     @OneToMany(mappedBy = "profesor")
     private List<Evento> eventos;
+
+    //profesor es un usuario
     @OneToOne(mappedBy = "profesor")
     private Usuario usuarios;
+
+
 
 }

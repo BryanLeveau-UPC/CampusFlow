@@ -15,8 +15,10 @@ public class Recompensa {
     private Long IDRecompensa;
     private String Plataforma;
     private String URL;
+
     @ManyToOne
     @JoinColumn(name = "id_EstudianteEstadistica")
     private EstudianteEstadistica estudianteEstadistica;
+
     private boolean Estado = true;
 }

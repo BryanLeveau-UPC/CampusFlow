@@ -17,15 +17,16 @@ public class Estudiante {
     private long IdEstudiante;
 
     private int Ciclo;
+
+    //lista de nota
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Nota> notas;
-
 
     @ManyToOne
     @JoinColumn(name = "idCarrera")
     private Carrera carrera;
 
-
+    //Cambiar id_estudianteEstadistca
     @OneToOne
     @JoinColumn(name = "id_estudianteEstadistica")
     private EstudianteEstadistica estudianteEstadistica;
@@ -35,6 +36,8 @@ public class Estudiante {
 
     @ManyToMany(mappedBy = "estudiantes")
     private List<Evento> eventos;
+
+
     private boolean Estado = true;
 
 }

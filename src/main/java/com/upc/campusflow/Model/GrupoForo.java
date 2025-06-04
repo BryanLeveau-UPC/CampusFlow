@@ -19,11 +19,16 @@ public class GrupoForo {
     private Long IdGrupoForo;
     private String Titulo;
     private String Descripcion;
+
     private String Campo;
+
     private Date FechaCreacion;
+
+    //ver en asignatura implementación tmb
     @OneToOne
     @JoinColumn(name = "id_Asigneatura")
     private Asignatura asignatura;
+
     @OneToMany(mappedBy = "grupoForo", cascade  = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Publicacion> Publicaciones;
 

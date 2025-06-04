@@ -24,6 +24,7 @@ public class Publicacion {
     @ManyToOne
     @JoinColumn(name = "idGrupoForo")
     private GrupoForo grupoForo;
+    // 1 publicación tiene varios recursos
 
 
 }
