@@ -30,9 +30,8 @@ public class AsignaturaService {
         ModelMapper modelMapper = new ModelMapper();
         for (Asignatura asignatura : asignaturas) {
             AsignaturaDTO asignaturaDTO = modelMapper.map(asignatura, AsignaturaDTO.class);
-            if(asignatura.getCarrera() != null && asignatura.getHorario() != null){
+            if(asignatura.getCarrera() != null ){
                 asignaturaDTO.setId_carrera(asignatura.getCarrera().getIdCarrera());
-                asignaturaDTO.setId_horario(asignatura.getHorario().getIdHorario());
             }
             asignaturaDTOS.add(asignaturaDTO);
         }
@@ -43,12 +42,10 @@ public class AsignaturaService {
     public AsignaturaDTO guardar(AsignaturaDTO asignaturaDTO) {
         ModelMapper modelMapper = new ModelMapper();
         Asignatura asignatura = modelMapper.map(asignaturaDTO, Asignatura.class);
-        if (asignaturaDTO.getId_carrera() != null && asignaturaDTO.getId_horario() != null) {
+        if (asignaturaDTO.getId_carrera() != null) {
             Carrera carrera = new Carrera();
             Horario horario = new Horario();
             carrera.setIdCarrera(asignaturaDTO.getId_carrera());
-            horario.setIdHorario(asignaturaDTO.getId_horario());
-            asignatura.setHorario(horario);
             asignatura.setCarrera(carrera);
         }
         asignatura = asignaturaRepository.save(asignatura);
@@ -62,12 +59,10 @@ public class AsignaturaService {
                 .orElseThrow(() -> new RuntimeException("Asignatura no encontrada con ID: " + id));
         modelMapper.map(asignaturaDTO, existente); // Sobrescribe los datos existentes
 
-        if (asignaturaDTO.getId_carrera() != null && asignaturaDTO.getId_horario() != null) {
+        if (asignaturaDTO.getId_carrera() != null) {
             Carrera carrera = new Carrera();
             Horario horario = new Horario();
             carrera.setIdCarrera(asignaturaDTO.getId_carrera());
-            horario.setIdHorario(asignaturaDTO.getId_horario());
-            existente.setHorario(horario);
             existente.setCarrera(carrera);
         }
 
@@ -97,9 +92,8 @@ public class AsignaturaService {
             AsignaturaDTO asignaturaDTO = modelMapper.map(asignatura, AsignaturaDTO.class);
 
             // Asegurarse de que la asignatura tenga carrera y horario, y asignar sus IDs
-            if (asignatura.getCarrera() != null && asignatura.getHorario() != null) {
+            if (asignatura.getCarrera() != null ) {
                 asignaturaDTO.setId_carrera(asignatura.getCarrera().getIdCarrera());
-                asignaturaDTO.setId_horario(asignatura.getHorario().getIdHorario());
             }
 
             asignaturaDTOS.add(asignaturaDTO);

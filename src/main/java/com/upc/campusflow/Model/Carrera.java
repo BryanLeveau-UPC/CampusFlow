@@ -19,6 +19,7 @@ public class Carrera {
     private String Malla_curricular;
     @OneToMany(mappedBy = "carrera", cascade  = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Asignatura> asignaturas;
+
     @OneToMany(mappedBy = "carrera", cascade  = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Estudiante> estudiantes;
 

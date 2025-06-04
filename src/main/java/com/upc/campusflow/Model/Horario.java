@@ -27,8 +27,9 @@ public class Horario {
     private Date horaFin;
 
     //id Asignatura Manytoone
-    @OneToMany(mappedBy = "horario", cascade  = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Asignatura> asignaturas;
+    @ManyToOne
+    @JoinColumn(name = "idAsignatura")
+    private Asignatura asignatura;
 
 
     private boolean Estado = true;

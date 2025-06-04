@@ -15,5 +15,5 @@ public class HorarioDTO {
     private Date horaInicio;
     private Date horaFin;
     private boolean Estado;
-
+    private long idAsignatura;
 }

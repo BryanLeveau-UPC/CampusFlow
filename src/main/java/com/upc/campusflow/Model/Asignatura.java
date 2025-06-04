@@ -24,10 +24,8 @@ public class Asignatura {
     @JoinColumn(name ="id_carrera")
     private Carrera carrera;
 
-    //Cambiar horarios onetoMany
-    @ManyToOne
-    @JoinColumn(name = "id_horario")
-    private Horario horario;
+    @OneToMany(mappedBy = "asignatura", cascade  = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Horario> horarios;
 
     @OneToMany(mappedBy = "asignatura", cascade  = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Nota> notas;

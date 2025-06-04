@@ -16,6 +16,5 @@ public class AsignaturaDTO {
     private double Creditos;
     private int Ciclo_Academico;
     private Long id_carrera;
-    private Long id_horario;
     private boolean Estado;
 }
