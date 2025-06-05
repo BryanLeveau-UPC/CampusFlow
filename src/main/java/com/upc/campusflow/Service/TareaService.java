@@ -14,13 +14,11 @@ import java.util.List;
 @Service
 public class TareaService {
     final TareaRepository tareaRepository;
-    private final AsignaturaRepository asignaturaRepository;
 
     public TareaService(TareaRepository tareaRepository, AsignaturaRepository asignaturaRepository) {
         this.tareaRepository = tareaRepository;
-        this.asignaturaRepository = asignaturaRepository;
     }
-
+    //RELACION CON ESTUDIANTE Y HORARIO
     //listar
     public List<TareaDTO> listar() {
         List<Tarea> tareas = tareaRepository.findAll()

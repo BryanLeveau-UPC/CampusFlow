@@ -21,6 +21,7 @@ public class RecursoService {
     public RecursoService(RecursoRepository recursoRepository) {
         this.recursoRepository = recursoRepository;
     }
+    //RELACION CON TAREA Y PUBLICACION
     // Listar todos los recursos
     public List<RecursoDTO> listar() {
         List<Recurso> recursos = recursoRepository.findAll()
@@ -77,7 +78,7 @@ public class RecursoService {
         return dto;
     }
 
-    //Eliminar
+    //Eliminar lógico
     public RecursoDTO eliminar(Long id) {
         ModelMapper modelMapper = new ModelMapper();
         Recurso entidad = recursoRepository.findById(id)
