@@ -24,7 +24,8 @@ public class Publicacion {
     @ManyToOne
     @JoinColumn(name = "idGrupoForo")
     private GrupoForo grupoForo;
+
     // 1 publicación tiene varios recursos
-
-
+    @OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Recurso> recursos;
 }

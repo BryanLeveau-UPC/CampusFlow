@@ -18,11 +18,6 @@ public class PublicacionController {
 
     final PublicacionService publicacionService;
 
-
-
-
-
-
     Logger log = Logger.getLogger(PublicacionController.class.getName());
 
     public PublicacionController(PublicacionService publicacionService) {

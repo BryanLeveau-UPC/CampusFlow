@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -21,4 +22,6 @@ public class PublicacionDTO {
     private String label;
     private GrupoForo idGrupoForo;
     private boolean Estado;
+    private List<RecursoDTO> recursos;
+
 }
