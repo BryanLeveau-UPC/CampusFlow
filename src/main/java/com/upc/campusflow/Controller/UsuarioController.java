@@ -20,13 +20,13 @@ public class UsuarioController {
     //listar
     @GetMapping
     public ResponseEntity<List<UsuarioDTO>> Listar(){
-        return ResponseEntity.ok(usuarioService.listarUsuarios());
+        return ResponseEntity.ok(usuarioService.listar());
     }
 
     //guardar
     @PostMapping
     public ResponseEntity<UsuarioDTO> guardar(@RequestBody UsuarioDTO usuarioDTO){
-        return ResponseEntity.ok(usuarioService.crearUsuario(usuarioDTO));
+        return ResponseEntity.ok(usuarioService.guardar(usuarioDTO));
     }
 
 
@@ -34,13 +34,13 @@ public class UsuarioController {
     // Modificar
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDTO> modificar(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) {
-        return ResponseEntity.ok(usuarioService.actualizarUsuario(id, usuarioDTO));
+        return ResponseEntity.ok(usuarioService.modificar(id, usuarioDTO));
     }
 
+    // Eliminar lógico
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarUsuario(@PathVariable Long id) {
-        usuarioService.eliminarUsuario(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<UsuarioDTO> eliminarLogico(@PathVariable Long id) {
+        return ResponseEntity.ok(usuarioService.eliminar(id));
     }
 
 }
