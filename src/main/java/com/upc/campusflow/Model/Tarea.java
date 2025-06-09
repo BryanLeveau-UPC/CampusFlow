@@ -22,15 +22,14 @@ public class Tarea {
     private Date fechaLimite;
     private String prioridad;
 
-    //1 estudiante tiene varias tareas
     @ManyToOne
     @JoinColumn(name="id_estudiante")
     private Estudiante estudiante;
-    //1 horario tiene varias tareas
+
     @ManyToOne
     @JoinColumn(name="id_horario")
     private Horario horario;
-    //1 tarea tiene varios recursos
+
     @OneToMany(mappedBy = "tarea", cascade  = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Recurso> recursos;
 

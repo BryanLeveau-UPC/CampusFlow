@@ -20,12 +20,12 @@ public class Recurso {
     private String url;
     private Date fechaSubida;
 
-    //1 tarea tiene varios recursos
+
     @ManyToOne
     @JoinColumn(name="id_tarea")
     private Tarea tarea;
 
-    // 1 publicacion tiene varios recursos
+
     @ManyToOne
     @JoinColumn(name="id_publicacion")
     private Publicacion publicacion;
