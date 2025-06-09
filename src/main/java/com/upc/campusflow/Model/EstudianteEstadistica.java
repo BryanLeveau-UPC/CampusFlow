@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -17,21 +18,21 @@ public class EstudianteEstadistica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idEstudianteEstadistica;
 
-    //tipo de variable cambiar LocalDate
-    private Date TotalHoraEstudiante;
+   //
+    private LocalDate TotalHoraEstudiante;
 
     private int TareasCompletadas;
 
-    //localDate
-    private Date UltimaConexion;
+    //
+    private LocalDate UltimaConexion;
 
     //Ver
     @OneToOne
     @JoinColumn(name = "id_estudiante")
     private Estudiante estudiante;
 
-    @OneToMany(mappedBy = "estudianteEstadistica", cascade  = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List  <Recompensa> recompensas;
+    @OneToMany(mappedBy = "estudianteEstadistica", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Recompensa> recompensas;
 
     private boolean Estado = true;
 }

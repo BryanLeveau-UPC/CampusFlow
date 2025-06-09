@@ -26,16 +26,13 @@ public class Estudiante {
     @JoinColumn(name = "idCarrera")
     private Carrera carrera;
 
-    //Cambiar id_estudianteEstadistca
-    @OneToOne
-    @JoinColumn(name = "id_estudianteEstadistica")
-    private EstudianteEstadistica estudianteEstadistica;
-
+    //
     @OneToOne(mappedBy = "estudiante")
     private Usuario usuarios;
 
     @ManyToMany(mappedBy = "estudiantes")
     private List<Evento> eventos;
+    //
 
 
     private boolean Estado = true;
