@@ -3,6 +3,7 @@ package com.upc.campusflow.Controller;
 import com.upc.campusflow.DTO.AsignaturaDTO;
 import com.upc.campusflow.DTO.NotaDTO;
 import com.upc.campusflow.Service.AsignaturaService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -48,4 +49,12 @@ public class AsignaturaController {
         return asignaturaService.obtenerTop3AsignaturasConMayorPromedio();
     }
 
+}
+
+public class evento {
+
+    private long id;
+
+    private string evento;
+    @ConditionalOnExpression (mappedBy = "dtall")
 }
