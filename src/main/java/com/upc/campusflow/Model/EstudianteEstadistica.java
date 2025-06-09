@@ -18,12 +18,12 @@ public class EstudianteEstadistica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idEstudianteEstadistica;
 
-    //tipo de variable cambiar LocalDate
+   //
     private LocalDate TotalHoraEstudiante;
 
     private int TareasCompletadas;
 
-    //localDate
+    //
     private LocalDate UltimaConexion;
 
     //Ver
