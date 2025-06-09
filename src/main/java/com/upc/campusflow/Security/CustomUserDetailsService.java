@@ -28,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true,
                 true,
                 Collections.singletonList(
-                        new SimpleGrantedAuthority(usuario.getRol().getNombre()) // <- Aquí se añade el rol, como "ADMIN"
+                        new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre().toUpperCase())// <- Aquí se añade el rol, como "ADMIN"
                 )
         );
     }
