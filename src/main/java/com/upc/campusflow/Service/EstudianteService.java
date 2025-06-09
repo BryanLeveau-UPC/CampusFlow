@@ -68,12 +68,6 @@ public class EstudianteService {
             existente.setCarrera(carrera);
         }
 
-        if (estudianteDTO.getEstudianteEstadistica() != null) {
-            EstudianteEstadistica estadistica = new EstudianteEstadistica();
-            estadistica.setIdEstudianteEstadistica(estudianteDTO.getEstudianteEstadistica());
-            existente.setEstudianteEstadistica(estadistica);
-        }
-
         Estudiante actualizado = iEstudiante.save(existente);
         return modelMapper.map(actualizado, EstudianteDTO.class);
     }

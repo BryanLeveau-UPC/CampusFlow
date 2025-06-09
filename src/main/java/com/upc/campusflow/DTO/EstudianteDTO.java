@@ -24,7 +24,6 @@ public class EstudianteDTO {
 
     private Long idCarreras;
 
-    private Long estudianteEstadistica;
     private Long usuarios;
     private boolean Estado;
 

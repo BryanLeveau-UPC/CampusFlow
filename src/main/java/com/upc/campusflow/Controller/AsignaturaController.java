@@ -50,11 +50,3 @@ public class AsignaturaController {
     }
 
 }
-
-public class evento {
-
-    private long id;
-
-    private string evento;
-    @ConditionalOnExpression (mappedBy = "dtall")
-}

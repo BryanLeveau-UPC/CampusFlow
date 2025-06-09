@@ -49,23 +49,23 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/v3/api-docs.yaml",
                                 "/webjars/**",
-                                "/swagger-resources/**"
+                                "/swagger-resources/**",
+                                "/usuarios",
+                                "/tareas",
+                                "/recursos",
+                                "/publicacion",
+                                "/profesor",
+                                "/nota",
+                                "/horarios",
+                                "/grupoForo",
+                                "/evento",
+                                "/estudiante-estadística",
+                                "/estudiante",
+                                "/carrera",
+                                "/asignatura"
+
                         ).permitAll()
 
-                        // Reglas específicas por rol
-                        .requestMatchers("/usuarios").hasAuthority("ADMIN")
-                        .requestMatchers("/tareas").hasAuthority("ADMIN")
-                        .requestMatchers("/recursos").hasAuthority("ADMIN")
-                        .requestMatchers("/publicacion").hasAuthority("ADMIN")
-                        .requestMatchers("/profesor").hasAuthority("ADMIN")
-                        .requestMatchers("/nota").hasAuthority("ADMIN")
-                        .requestMatchers("/horarios").hasAuthority("ADMIN")
-                        .requestMatchers("/grupoForo").hasAuthority("ADMIN")
-                        .requestMatchers("/evento").hasAuthority("ADMIN")
-                        .requestMatchers("/estudiante-estadística").hasAuthority("ADMIN")
-                        .requestMatchers("/estudiante").hasAuthority("ADMIN")
-                        .requestMatchers("/carrera").hasAuthority("ADMIN")
-                        .requestMatchers("/asignatura").hasAuthority("ADMIN")
 
                         // Cualquier otra petición requiere autenticación
                         .anyRequest().authenticated()
