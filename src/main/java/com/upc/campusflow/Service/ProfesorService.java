@@ -3,6 +3,7 @@ package com.upc.campusflow.Service;
 import com.upc.campusflow.DTO.ProfesorDTO;
 import com.upc.campusflow.Model.Profesor;
 import com.upc.campusflow.Repository.ProfesorRepository;
+import com.upc.campusflow.Repository.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,11 @@ import java.util.List;
 @Service
 public class ProfesorService {
     final ProfesorRepository profesorRepository;
+    final UsuarioRepository usuarioRepository;
 
-    public ProfesorService(ProfesorRepository profesorRepository) {
+    public ProfesorService(ProfesorRepository profesorRepository, UsuarioRepository usuarioRepository) {
         this.profesorRepository = profesorRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     //Listar
@@ -34,10 +37,17 @@ public class ProfesorService {
     public ProfesorDTO guardar(ProfesorDTO profesorDTO){
         ModelMapper modelMapper = new ModelMapper();
         Profesor profesor = modelMapper.map(profesorDTO, Profesor.class);
-        profesor = profesorRepository.save(profesor);
-        profesorDTO = modelMapper.map(profesor, ProfesorDTO.class);
-        return profesorDTO;
 
+        // Fetch the Usuario using the provided usuario ID from DTO
+        if (profesorDTO.getUsuario() != null) {
+            usuarioRepository.findById(profesorDTO.getUsuario()).ifPresent(profesor::setUsuario);
+        } else {
+            throw new RuntimeException("El ID de usuario no puede ser nulo al registrar un profesor.");
+        }
+
+        profesor = profesorRepository.save(profesor);
+        ProfesorDTO dto = modelMapper.map(profesor, ProfesorDTO.class);
+        return dto;
     }
 
     //Modificar

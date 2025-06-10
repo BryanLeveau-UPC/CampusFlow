@@ -23,9 +23,9 @@ public class Profesor {
     private List<Evento> eventos;
 
     //profesor es un usuario
-    @OneToOne(mappedBy = "profesor")
-    private Usuario usuarios;
-
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
 
 }
