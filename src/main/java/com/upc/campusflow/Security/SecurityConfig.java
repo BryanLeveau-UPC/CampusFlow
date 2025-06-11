@@ -50,22 +50,21 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/v3/api-docs.yaml",
                                 "/webjars/**",
-                                "/swagger-resources/**",
-                                "/tareas",
-                                "/recursos",
-                                "/publicacion",
-                                "/nota",
-                                "/horarios",
-                                "/grupoForo",
-                                "/evento",
-                                "/estudiante-estadística",
-                                "/estudiante",
-                                "/carrera",
-                                "/asignatura"
-
+                                "/swagger-resources/**"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/profesor").hasRole("ADMIN")
+                        .requestMatchers("/profesor").hasRole("ADMIN")
                         .requestMatchers("/usuarios").hasRole("ADMIN")
+                        .requestMatchers("//tareas").hasRole("ADMIN")
+                        .requestMatchers("/recursos").hasRole("ADMIN")
+                        .requestMatchers("/publicacion").hasRole("ADMIN")
+                        .requestMatchers("/nota").hasRole("ADMIN")
+                        .requestMatchers("/horarios").hasRole("ADMIN")
+                        .requestMatchers("/grupoForo").hasRole("ADMIN")
+                        .requestMatchers("/evento").hasRole("ADMIN")
+                        .requestMatchers("/estudiante-estadística").hasRole("ADMIN")
+                        .requestMatchers("/estudiante").hasRole("ADMIN")
+                        .requestMatchers("/carrera").hasRole("ADMIN")
+                        .requestMatchers("/asignatura").hasRole("ADMIN")
 
                         // Cualquier otra petición requiere autenticación
                         .anyRequest().authenticated()
