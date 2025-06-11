@@ -19,12 +19,9 @@ import java.util.List;
 @NoArgsConstructor
 public class EstudianteDTO {
     private long IdEstudiante;
-
     private int Ciclo;
-
-    private Long idCarreras;
-
-    private Long usuarios;
+    private Long idCarrera;
+    private Long idUsuario;
     private boolean Estado;
 
 }

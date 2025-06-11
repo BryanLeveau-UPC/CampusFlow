@@ -13,5 +13,5 @@ public class ProfesorDTO {
     private String especialidad;
     private String numColegiatura;
     private boolean Estado;
-    private Long usuario;
+    private Long Usuario;
 }

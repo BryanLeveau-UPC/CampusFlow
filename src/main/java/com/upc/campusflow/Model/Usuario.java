@@ -36,8 +36,10 @@ public class Usuario implements UserDetails {
     @JoinColumn(name = "id_rol", nullable = false)
     private Rol rol;
 
-    @OneToOne
-    @JoinColumn(name = "id_estudiante")
+    // --- ¡CAMBIO CRÍTICO AQUÍ! ---
+    // Ahora Usuario es el lado INVERSO de la relación con Estudiante
+    // 'usuarios' es el nombre del campo en tu clase Estudiante
+    @OneToOne(mappedBy = "usuarios", cascade = CascadeType.ALL)
     private Estudiante estudiante;
 
     @OneToOne

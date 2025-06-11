@@ -18,7 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 public class EventoDTO {
     private Long Id;
-
     private String Nombre;
     private LocalDate FechaInicio;
     private LocalDate FechaFin;

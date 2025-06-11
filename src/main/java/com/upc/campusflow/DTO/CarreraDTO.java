@@ -15,7 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CarreraDTO {
-
     private Long idCarrera;
     private String Nombre;
     private boolean Estado;

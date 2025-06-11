@@ -51,11 +51,9 @@ public class SecurityConfig {
                                 "/v3/api-docs.yaml",
                                 "/webjars/**",
                                 "/swagger-resources/**",
-                                "/usuarios",
                                 "/tareas",
                                 "/recursos",
                                 "/publicacion",
-                                "/profesor",
                                 "/nota",
                                 "/horarios",
                                 "/grupoForo",
@@ -66,7 +64,8 @@ public class SecurityConfig {
                                 "/asignatura"
 
                         ).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/estudiante").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/profesor").hasRole("ADMIN")
+                        .requestMatchers("/usuarios").hasRole("ADMIN")
 
                         // Cualquier otra petición requiere autenticación
                         .anyRequest().authenticated()

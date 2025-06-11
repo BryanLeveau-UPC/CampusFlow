@@ -2,6 +2,7 @@ package com.upc.campusflow.Service;
 
 import com.upc.campusflow.DTO.ProfesorDTO;
 import com.upc.campusflow.Model.Profesor;
+import com.upc.campusflow.Model.Usuario;
 import com.upc.campusflow.Repository.ProfesorRepository;
 import com.upc.campusflow.Repository.UsuarioRepository;
 import org.modelmapper.ModelMapper;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProfesorService {
@@ -35,18 +37,35 @@ public class ProfesorService {
 
     //Guardar
     public ProfesorDTO guardar(ProfesorDTO profesorDTO){
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper(); // Instancia el ModelMapper aquí
         Profesor profesor = modelMapper.map(profesorDTO, Profesor.class);
 
         // Fetch the Usuario using the provided usuario ID from DTO
         if (profesorDTO.getUsuario() != null) {
-            usuarioRepository.findById(profesorDTO.getUsuario()).ifPresent(profesor::setUsuario);
+            Optional<Usuario> optionalUsuario = usuarioRepository.findById(profesorDTO.getUsuario());
+            if (optionalUsuario.isPresent()) {
+                profesor.setUsuario(optionalUsuario.get());
+            } else {
+                throw new RuntimeException("No se encontró el Usuario con ID: " + profesorDTO.getUsuario() + ". No se puede registrar el profesor.");
+            }
         } else {
             throw new RuntimeException("El ID de usuario no puede ser nulo al registrar un profesor.");
         }
 
+        // Antes de guardar, asegurémonos de que el objeto Usuario NO es nulo
+        if (profesor.getUsuario() == null) {
+            throw new RuntimeException("Error interno: El objeto Usuario no pudo ser asignado al Profesor antes de guardar.");
+        }
+
         profesor = profesorRepository.save(profesor);
+
+        // --- Asignación manual del ID de Usuario para la respuesta (SIN PROPERTYMAP) ---
         ProfesorDTO dto = modelMapper.map(profesor, ProfesorDTO.class);
+        if (profesor.getUsuario() != null) {
+            dto.setUsuario(profesor.getUsuario().getIdUsuario());
+        }
+        // --- Fin de la asignación manual ---
+
         return dto;
     }
 

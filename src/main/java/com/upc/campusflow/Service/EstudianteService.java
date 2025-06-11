@@ -4,7 +4,9 @@ import com.upc.campusflow.DTO.EstudianteDTO;
 import com.upc.campusflow.Model.Carrera;
 import com.upc.campusflow.Model.Estudiante;
 import com.upc.campusflow.Model.EstudianteEstadistica;
+import com.upc.campusflow.Repository.CarreraRepository;
 import com.upc.campusflow.Repository.EstudianteRepository;
+import com.upc.campusflow.Repository.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -21,16 +23,53 @@ import java.util.stream.Collectors;
 public class EstudianteService {
 
     final EstudianteRepository iEstudiante;
+    final CarreraRepository iCarrera;
+    final UsuarioRepository iUsuario;
 
-    public EstudianteService(EstudianteRepository iEstudiante) {
+    public EstudianteService(EstudianteRepository iEstudiante, CarreraRepository iCarrera, UsuarioRepository iUsuario) {
         this.iEstudiante = iEstudiante;
+        this.iCarrera = iCarrera;
+        this.iUsuario = iUsuario;
     }
 
-    public EstudianteDTO guardar(EstudianteDTO estudianteDTO) {
+    public EstudianteDTO guardar(EstudianteDTO estudianteDTO){
         ModelMapper modelMapper = new ModelMapper();
         Estudiante estudiante = modelMapper.map(estudianteDTO, Estudiante.class);
+
+        // --- Manejo de la Asociación con Carrera ---
+        if (estudianteDTO.getIdCarrera() != null) {
+            iCarrera.findById(estudianteDTO.getIdCarrera())
+                    .ifPresent(estudiante::setCarrera);
+        } else {
+            throw new RuntimeException("El ID de carrera no puede ser nulo al registrar un estudiante.");
+        }
+
+        // --- Manejo de la Asociación con Usuario ---
+        if (estudianteDTO.getIdUsuario() != null) {
+            iUsuario.findById(estudianteDTO.getIdUsuario())
+                    .ifPresent(estudiante::setUsuarios);
+        } else {
+            throw new RuntimeException("El ID de usuario no puede ser nulo al registrar un estudiante.");
+        }
+
+        if (estudiante.getUsuarios() == null) {
+            throw new RuntimeException("No se encontró el Usuario con ID: " + estudianteDTO.getIdUsuario() + ". No se puede registrar el estudiante.");
+        }
+
+        // Guarda el Estudiante.
         estudiante = iEstudiante.save(estudiante);
-        return modelMapper.map(estudiante, EstudianteDTO.class);
+
+        // --- ¡CAMBIO CLAVE AQUÍ PARA EL MAPEO DE RESPUESTA SIN PROPERTYMAP! ---
+        EstudianteDTO responseDto = modelMapper.map(estudiante, EstudianteDTO.class);
+
+        // Asignación manual del idUsuario después del mapeo base
+        if (estudiante.getUsuarios() != null) {
+            responseDto.setIdUsuario(estudiante.getUsuarios().getIdUsuario());
+        }
+        // No necesitas un 'else' aquí, ya que si es null, el idUsuario en el DTO se mantendrá null (que es el valor por defecto o lo que vino del input si no se sobreescribe)
+        // pero con la validación anterior, 'estudiante.getUsuarios()' nunca debería ser null en este punto.
+
+        return responseDto;
     }
 
     public EstudianteDTO buscarPorId(Long id) {
@@ -62,9 +101,9 @@ public class EstudianteService {
 
         existente.setCiclo(estudianteDTO.getCiclo());
 
-        if (estudianteDTO.getIdCarreras() != null) {
+        if (estudianteDTO.getIdCarrera() != null) {
             Carrera carrera = new Carrera();
-            carrera.setIdCarrera(estudianteDTO.getIdCarreras());
+            carrera.setIdCarrera(estudianteDTO.getIdCarrera());
             existente.setCarrera(carrera);
         }
 
