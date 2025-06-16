@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -11,13 +12,13 @@ import java.util.Date;
 @NoArgsConstructor
 public class EstudianteEstadisticaDTO {
     private Long idEstudianteEstadistica;
-    private Date TotalHoraEstudiante;
+    private LocalDate TotalHoraEstudiante;
     private int TareasCompletadas;
 
 
 
 
-    private Date UltimaConexion;
+    private LocalDate UltimaConexion;
     private int NiveldePrioridad;
     private Long Id_Estudiante;
     private boolean Estado;

@@ -2,6 +2,7 @@ package com.upc.campusflow.Service;
 
 
 import com.upc.campusflow.DTO.CarreraDTO;
+import com.upc.campusflow.Exception.RecursoNoEncontradoException;
 import com.upc.campusflow.Model.Carrera;
 import com.upc.campusflow.Model.Usuario;
 import com.upc.campusflow.Repository.CarreraRepository;
@@ -40,17 +41,21 @@ public class CarreraService {
         return carreraDTO;
     }
 
-    //Modificar
-
+    // --- Modificar Carrera Existente ---
     public CarreraDTO modificar (Long id , CarreraDTO carreraDTO) {
+        // Instancia de ModelMapper dentro del método
         ModelMapper modelMapper = new ModelMapper();
-        Carrera exist = carreraRepository.findById(id).orElseThrow(() -> new RuntimeException("Carrera no encontrado con ID: " + id));
-        modelMapper.map(carreraDTO, exist);
 
-        Carrera actualize = carreraRepository.save(exist);
-        CarreraDTO dto = modelMapper.map(actualize, CarreraDTO.class);
-        return dto;
+        Carrera existingCarrera = carreraRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Carrera no encontrada con ID: " + id));
 
+        // **Actualización Manual de Campos (para evitar problemas con el ID)**
+        existingCarrera.setNombre(carreraDTO.getNombre());
+        existingCarrera.setMalla_curricular(carreraDTO.getMalla_curricular());
+        existingCarrera.setEstado(carreraDTO.isEstado());
+
+        Carrera updatedCarrera = carreraRepository.save(existingCarrera);
+        return modelMapper.map(updatedCarrera, CarreraDTO.class);
     }
 
     //Eliminar

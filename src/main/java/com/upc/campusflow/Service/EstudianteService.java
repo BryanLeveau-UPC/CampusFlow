@@ -1,9 +1,11 @@
 package com.upc.campusflow.Service;
 
 import com.upc.campusflow.DTO.EstudianteDTO;
+import com.upc.campusflow.Exception.RecursoNoEncontradoException;
 import com.upc.campusflow.Model.Carrera;
 import com.upc.campusflow.Model.Estudiante;
 import com.upc.campusflow.Model.EstudianteEstadistica;
+import com.upc.campusflow.Model.Usuario;
 import com.upc.campusflow.Repository.CarreraRepository;
 import com.upc.campusflow.Repository.EstudianteRepository;
 import com.upc.campusflow.Repository.UsuarioRepository;
@@ -73,42 +75,78 @@ public class EstudianteService {
     }
 
     public EstudianteDTO buscarPorId(Long id) {
-        Estudiante estudiante = iEstudiante.findById(id).orElse(null);
+        Estudiante estudiante = iEstudiante.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Estudiante no encontrado con ID: " + id)); // Using custom exception
         if (estudiante == null) return null;
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(estudiante, EstudianteDTO.class);
     }
 
+    // --- Listar Estudiantes ---
     public List<EstudianteDTO> listar() {
+        ModelMapper modelMapper = new ModelMapper(); // Instancia local
         List<Estudiante> estudiantes = iEstudiante.findAll();
-        List<EstudianteDTO> estudianteDTOS = new ArrayList<>();
-        ModelMapper modelMapper = new ModelMapper();
-        for (Estudiante estudiante : estudiantes) {
-            EstudianteDTO estudianteDTO = modelMapper.map(estudiante, EstudianteDTO.class);
-            estudianteDTOS.add(estudianteDTO);
-        }
-        return estudianteDTOS;
+        return estudiantes.stream()
+                .map(estudiante -> {
+                    EstudianteDTO estudianteDTO = modelMapper.map(estudiante, EstudianteDTO.class);
+                    // Poblar IDs de relaciones en el DTO para listar
+                    if (estudiante.getCarrera() != null) {
+                        estudianteDTO.setIdCarrera(estudiante.getCarrera().getIdCarrera());
+                    }
+                    if (estudiante.getUsuarios() != null) {
+                        estudianteDTO.setIdUsuario(estudiante.getUsuarios().getIdUsuario());
+                    }
+                    return estudianteDTO;
+                })
+                .collect(Collectors.toList());
     }
 
+    // --- Modificar Estudiante (AJUSTADO) ---
     public EstudianteDTO modificar(Long id, EstudianteDTO estudianteDTO) {
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper(); // Instancia local
+
+        // 1. Buscar el estudiante existente
         Estudiante existente = iEstudiante.findById(id)
-                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado con ID: " + id));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Estudiante no encontrado con ID: " + id));
 
-        if (!existente.isEstado()) {
-            throw new RuntimeException("No se puede modificar un estudiante inactivo.");
-        }
+        // **CAMBIO AQUÍ: Eliminamos la validación que impedía modificar estudiantes inactivos.**
+        // Si necesitas una validación específica, como impedir cambiar el ciclo si está inactivo,
+        // la pondrías para ese campo en particular, no para toda la operación.
 
+        // 2. Actualizar campos básicos, incluyendo el estado
         existente.setCiclo(estudianteDTO.getCiclo());
+        existente.setEstado(estudianteDTO.isEstado()); // <--- ¡Asegúrate de que este campo se actualiza!
 
+        // 3. Actualizar Carrera (si se proporciona un nuevo ID de Carrera)
         if (estudianteDTO.getIdCarrera() != null) {
-            Carrera carrera = new Carrera();
-            carrera.setIdCarrera(estudianteDTO.getIdCarrera());
-            existente.setCarrera(carrera);
+            if (existente.getCarrera() == null || !existente.getCarrera().getIdCarrera().equals(estudianteDTO.getIdCarrera())) {
+                Carrera nuevaCarrera = iCarrera.findById(estudianteDTO.getIdCarrera())
+                        .orElseThrow(() -> new RecursoNoEncontradoException("Carrera no encontrada con ID: " + estudianteDTO.getIdCarrera()));
+                existente.setCarrera(nuevaCarrera);
+            }
+        } else {
+            throw new IllegalArgumentException("El ID de carrera no puede ser nulo en la actualización.");
         }
 
+        // 4. Actualizar Usuario (si se proporciona un nuevo ID de Usuario)
+        if (estudianteDTO.getIdUsuario() != null) {
+            if (existente.getUsuarios() == null || !existente.getUsuarios().getIdUsuario().equals(estudianteDTO.getIdUsuario())) {
+                Usuario nuevoUsuario = iUsuario.findById(estudianteDTO.getIdUsuario())
+                        .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado con ID: " + estudianteDTO.getIdUsuario()));
+                existente.setUsuarios(nuevoUsuario);
+            }
+        } else {
+            throw new IllegalArgumentException("El ID de usuario no puede ser nulo en la actualización.");
+        }
+
+        // 5. Guardar los cambios
         Estudiante actualizado = iEstudiante.save(existente);
-        return modelMapper.map(actualizado, EstudianteDTO.class);
+
+        // 6. Mapear a DTO para la respuesta y poblar IDs de relaciones
+        EstudianteDTO responseDto = modelMapper.map(actualizado, EstudianteDTO.class);
+        responseDto.setIdCarrera(actualizado.getCarrera().getIdCarrera());
+        responseDto.setIdUsuario(actualizado.getUsuarios().getIdUsuario());
+        return responseDto;
     }
 
     // Eliminar lógico
