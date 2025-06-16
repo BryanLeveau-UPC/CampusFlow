@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class EstudianteEstadistica {
     private long idEstudianteEstadistica;
 
    //
-    private LocalDate TotalHoraEstudiante;
+    private LocalDateTime TotalHoraEstudiante;
 
     private int TareasCompletadas;
 

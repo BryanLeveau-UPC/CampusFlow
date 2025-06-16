@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -12,14 +13,10 @@ import java.util.Date;
 @NoArgsConstructor
 public class EstudianteEstadisticaDTO {
     private Long idEstudianteEstadistica;
-    private LocalDate TotalHoraEstudiante;
+    private LocalDateTime TotalHoraEstudiante;
     private int TareasCompletadas;
-
-
-
-
     private LocalDate UltimaConexion;
-    private int NiveldePrioridad;
+    //private int niveldePrioridad; => no se que variable es esta, pero no croe que deberiamos introducirla
     private Long Id_Estudiante;
     private boolean Estado;
 
