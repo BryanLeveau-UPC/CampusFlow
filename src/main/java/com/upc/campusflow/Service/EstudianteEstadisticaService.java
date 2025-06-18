@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +92,7 @@ public class EstudianteEstadisticaService {
 
     //Modificar
     public EstudianteEstadisticaDTO modificar(Long id, EstudianteEstadisticaDTO estudianteEstadisticaDTO) {
+        // 1. Recuperar la entidad existente de la base de datos
         EstudianteEstadistica existente = estudianteEstadisticaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Estadística de estudiante no encontrada con ID: " + id));
 
@@ -103,26 +105,36 @@ public class EstudianteEstadisticaService {
                 .orElseThrow(() -> new RecursoNoEncontradoException(
                         "Estudiante con ID " + estudianteEstadisticaDTO.getId_Estudiante() + " no encontrado."
                 ));
+
+        // Validación de fecha: UltimaConexion no puede ser una fecha futura
+        if (estudianteEstadisticaDTO.getUltimaConexion() != null && estudianteEstadisticaDTO.getUltimaConexion().isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("La 'Ultima Conexión' no puede ser una fecha futura.");
+        }
         // --- FIN VALIDACIONES ---
 
+        // 2. Configurar ModelMapper para la actualización
         ModelMapper modelMapper = new ModelMapper();
-        // Configuración para mapear de DTO a Entidad existente
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT); // Buena práctica
         modelMapper.createTypeMap(EstudianteEstadisticaDTO.class, EstudianteEstadistica.class)
                 .addMappings(mapper -> {
-                    // **CRUCIAL**: Ignorar el mapeo automático del objeto Estudiante anidado
+                    // CRUCIAL 1: Ignorar el mapeo del objeto Estudiante (lo asignaremos manualmente)
                     mapper.skip(EstudianteEstadistica::setEstudiante);
+                    // CRUCIAL 2: Ignorar el mapeo del ID principal de la estadística.
+                    // ¡Esto es lo que causa el error "identifier was altered"!
+                    mapper.skip(EstudianteEstadistica::setIdEstudianteEstadistica);
                 });
 
-        modelMapper.map(estudianteEstadisticaDTO, existente); // Sobrescribe los datos existentes
+        // 3. Mapear los campos del DTO a la entidad existente (excluyendo el ID y el objeto Estudiante)
+        modelMapper.map(estudianteEstadisticaDTO, existente);
 
-        // Asigna el objeto Estudiante recuperado manualmente
+        // 4. Asignar el objeto Estudiante recuperado manualmente
         existente.setEstudiante(estudiante);
 
+        // 6. Guardar la entidad actualizada en la base de datos
         EstudianteEstadistica actualizado = estudianteEstadisticaRepository.save(existente);
 
-        // Configuración para mapear de Entidad a DTO (para el retorno)
-        ModelMapper returnModelMapper = new ModelMapper(); // Necesitas una nueva instancia para el mapeo de retorno
+        // 7. Configuración para mapear de la Entidad actualizada a un DTO para el retorno
+        ModelMapper returnModelMapper = new ModelMapper();
         returnModelMapper.createTypeMap(EstudianteEstadistica.class, EstudianteEstadisticaDTO.class)
                 .addMappings(mapper -> {
                     mapper.map(src -> src.getEstudiante().getIdEstudiante(), EstudianteEstadisticaDTO::setId_Estudiante);
@@ -130,7 +142,6 @@ public class EstudianteEstadisticaService {
 
         return returnModelMapper.map(actualizado, EstudianteEstadisticaDTO.class);
     }
-
     //Eliminar lógico
     public EstudianteEstadisticaDTO eliminar(Long id) {
         EstudianteEstadistica entidad = estudianteEstadisticaRepository.findById(id)

@@ -1,10 +1,13 @@
 package com.upc.campusflow.Service;
 
 import com.upc.campusflow.DTO.EventoDTO;
+import com.upc.campusflow.Exception.RecursoNoEncontradoException;
 import com.upc.campusflow.Model.Evento;
 import com.upc.campusflow.Model.Profesor;
 import com.upc.campusflow.Repository.EventoRepository;
+import com.upc.campusflow.Repository.ProfesorRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -16,23 +19,59 @@ import java.util.List;
 public class EventoService {
 
     final EventoRepository iEventoRepository;
+    final ProfesorRepository iProfesorRepository;
 
-    public EventoService(EventoRepository iEventoRepository) {
+    public EventoService(EventoRepository iEventoRepository, ProfesorRepository iProfesorRepository) {
         this.iEventoRepository = iEventoRepository;
+        this.iProfesorRepository = iProfesorRepository;
     }
 
-    public EventoDTO guardar(EventoDTO eventoDTO) {
-        ModelMapper modelMapper = new ModelMapper();
-        Evento evento = modelMapper.map(eventoDTO, Evento.class);
 
-        if (eventoDTO.getIdProfesor() != null) {
-            Profesor profesor = new Profesor();
-            profesor.setIdProfesor(eventoDTO.getIdProfesor());
-            evento.setProfesor(profesor);
+    public EventoDTO guardar(EventoDTO eventoDTO) {
+        ModelMapper modelMapper = new ModelMapper(); // ModelMapper instance for this method
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        // Configure DTO to Entity mapping for saving
+        modelMapper.createTypeMap(EventoDTO.class, Evento.class)
+                .addMappings(mapper -> {
+                    mapper.skip(Evento::setIdEvento); // Skip ID as it's auto-generated
+                    mapper.skip(Evento::setProfesor); // Skip Profesor object, will be set manually
+                    mapper.skip(Evento::setEstudiantes); // Skip students list, if not handled in DTO
+                });
+
+        // --- Validations for saving ---
+        if (eventoDTO.getIdProfesor() == null) {
+            throw new IllegalArgumentException("El ID del profesor es requerido para crear un evento.");
         }
+        Profesor profesor = iProfesorRepository.findById(eventoDTO.getIdProfesor())
+                .orElseThrow(() -> new RecursoNoEncontradoException(
+                        "Profesor con ID " + eventoDTO.getIdProfesor() + " no encontrado."
+                ));
+
+        // Date Validations
+        if (eventoDTO.getFechaInicio() == null || eventoDTO.getFechaFin() == null) {
+            throw new IllegalArgumentException("Fecha de inicio y Fecha de fin son requeridas.");
+        }
+        if (eventoDTO.getFechaFin().isBefore(eventoDTO.getFechaInicio())) {
+            throw new IllegalArgumentException("La Fecha de Fin no puede ser anterior a la Fecha de Inicio.");
+        }
+        if (eventoDTO.getFechaInicio().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("La Fecha de Inicio no puede ser una fecha pasada.");
+        }
+        // --- End Validations ---
+
+        Evento evento = modelMapper.map(eventoDTO, Evento.class);
+        evento.setProfesor(profesor); // Set the actual Profesor entity
 
         evento = iEventoRepository.save(evento);
-        return modelMapper.map(evento, EventoDTO.class);
+
+        // Configure Entity to DTO mapping for the return value
+        ModelMapper returnMapper = new ModelMapper(); // New ModelMapper for return DTO mapping
+        returnMapper.createTypeMap(Evento.class, EventoDTO.class)
+                .addMappings(mapper -> {
+                    mapper.map(src -> src.getProfesor() != null ? src.getProfesor().getIdProfesor() : null, EventoDTO::setIdProfesor);
+                });
+        return returnMapper.map(evento, EventoDTO.class);
     }
 
     public EventoDTO buscarPorId(Long id) {
@@ -59,24 +98,55 @@ public class EventoService {
     }
 
     public EventoDTO modificar(Long id, EventoDTO eventoDTO) {
+        Evento existingEvento = iEventoRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Evento no encontrado con ID: " + id));
+
+        // --- Business Logic Validation ---
+        if (!existingEvento.isEstado() && !eventoDTO.isEstado()) {
+            throw new IllegalArgumentException("No se puede modificar un evento inactivo (estado=false). Para modificarlo, debe cambiar su estado a activo (estado=true) en la petición.");
+        }
+
+        // --- Validations ---
+        if (eventoDTO.getIdProfesor() == null) {
+            throw new IllegalArgumentException("El ID del profesor es requerido para modificar un evento.");
+        }
+        Profesor profesor = iProfesorRepository.findById(eventoDTO.getIdProfesor())
+                .orElseThrow(() -> new RecursoNoEncontradoException(
+                        "Profesor con ID " + eventoDTO.getIdProfesor() + " no encontrado."
+                ));
+
+        if (eventoDTO.getFechaInicio() == null || eventoDTO.getFechaFin() == null) {
+            throw new IllegalArgumentException("Fecha de inicio y Fecha de fin son requeridas.");
+        }
+        if (eventoDTO.getFechaFin().isBefore(eventoDTO.getFechaInicio())) {
+            throw new IllegalArgumentException("La Fecha de Fin no puede ser anterior a la Fecha de Inicio.");
+        }
+        // --- End Validations ---
+
         ModelMapper modelMapper = new ModelMapper();
-        Evento existente = iEventoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Evento no encontrado con ID: " + id));
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-        if (!existente.isEstado()) {
-            throw new RuntimeException("No se puede modificar un evento inactivo.");
+        // Configure DTO to existing Entity mapping
+        modelMapper.createTypeMap(EventoDTO.class, Evento.class)
+                .addMappings(mapper -> {
+                    mapper.skip(Evento::setIdEvento); // Skip ID as it's for an existing entity
+                    mapper.skip(Evento::setProfesor); // Profesor will be set manually
+                    mapper.skip(Evento::setEstudiantes); // Students list is not directly mapped from DTO
+                });
+
+        modelMapper.map(eventoDTO, existingEvento);
+
+        existingEvento.setProfesor(profesor);
+        existingEvento.setEstado(eventoDTO.isEstado());
+
+        Evento updatedEvento = iEventoRepository.save(existingEvento);
+
+        // Manually map to DTO for the return value
+        EventoDTO returnDTO = modelMapper.map(updatedEvento, EventoDTO.class);
+        if (updatedEvento.getProfesor() != null) {
+            returnDTO.setIdProfesor(updatedEvento.getProfesor().getIdProfesor());
         }
-
-        modelMapper.map(eventoDTO, existente);
-
-        if (eventoDTO.getIdProfesor() != null) {
-            Profesor profe = new Profesor();
-            profe.setIdProfesor(eventoDTO.getIdProfesor());
-            existente.setProfesor(profe);
-        }
-
-        Evento actualizado = iEventoRepository.save(existente);
-        return modelMapper.map(actualizado, EventoDTO.class);
+        return returnDTO;
     }
 
     public EventoDTO eliminar(Long id) {

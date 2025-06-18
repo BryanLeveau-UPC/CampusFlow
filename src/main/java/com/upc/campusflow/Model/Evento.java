@@ -15,7 +15,7 @@ import java.util.List;
 public class Evento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long IdEvento;
 
     private String Nombre;
     private LocalDate FechaInicio;
