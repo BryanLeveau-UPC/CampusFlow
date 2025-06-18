@@ -15,5 +15,6 @@ public class NotaDTO {
     private double Peso_Nota;
     private Long id_asignatura;
     private boolean Estado;
+    private Long id_estudiante;
 
 }
