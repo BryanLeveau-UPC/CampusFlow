@@ -21,7 +21,7 @@ public class Publicacion {
     private String label;
     private boolean Estado = true;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idGrupoForo")
     private GrupoForo grupoForo;
 
