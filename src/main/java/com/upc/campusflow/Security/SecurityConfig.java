@@ -44,6 +44,7 @@ public class SecurityConfig {
                         // Rutas públicas
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/carrera").permitAll()
 
                         // Swagger
                         .requestMatchers(
