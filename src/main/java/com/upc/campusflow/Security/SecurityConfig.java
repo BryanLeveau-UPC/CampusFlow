@@ -45,6 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/carrera").permitAll()
+                        .requestMatchers("/estudiante/register").permitAll()
 
                         // Swagger
                         .requestMatchers(
