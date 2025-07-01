@@ -19,8 +19,9 @@ public class Profesor {
     private String numColegiatura;
     private boolean Estado = true;
 
-    @OneToMany(mappedBy = "profesor")
-    private List<Evento> eventos;
+    @ManyToOne
+    @JoinColumn(name = "idCarrera")
+    private Carrera carrera;
 
     //profesor es un usuario
     @OneToOne(cascade = CascadeType.ALL)

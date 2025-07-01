@@ -13,7 +13,9 @@ import com.upc.campusflow.Service.RolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,9 +52,31 @@ public class AuthController {
             UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
             String token = jwtTokenUtil.generateToken(userDetails);
 
-            return ResponseEntity.ok(new AuthResponse(token));
+            // Obtener el rol del usuario (asumiendo un solo rol principal)
+            String userRole = userDetails.getAuthorities().stream()
+                    .findFirst() // Obtiene la primera autoridad
+                    .map(GrantedAuthority::getAuthority) // Mapea a su nombre de autoridad
+                    .orElse("UNKNOWN_ROLE"); // Rol por defecto si no se encuentra
+
+            // Obtener el ID del usuario
+            // Necesitamos buscar el objeto Usuario para obtener su ID
+            Usuario usuario = usuarioRepository.findByUsername(authRequest.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado después de autenticación exitosa."));
+
+            Long userId = usuario.getIdUsuario();
+
+
+            // Devolver el token, el rol y el ID del usuario en la respuesta
+            return ResponseEntity.ok(new AuthResponse(token, userRole, userId));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(401).body("Credenciales inválidas");
+        } catch (UsernameNotFoundException e) {
+            // Esto podría ocurrir si el CustomUserDetailsService no encuentra el usuario
+            // o si el usuario se elimina justo después de la autenticación (caso raro)
+            return ResponseEntity.status(404).body("Usuario no encontrado");
+        } catch (Exception e) {
+            // Captura cualquier otra excepción inesperada
+            return ResponseEntity.status(500).body("Error interno del servidor: " + e.getMessage());
         }
     }
 
