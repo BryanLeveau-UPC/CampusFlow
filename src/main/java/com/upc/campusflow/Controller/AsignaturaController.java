@@ -49,4 +49,13 @@ public class AsignaturaController {
         return asignaturaService.obtenerTop3AsignaturasConMayorPromedio();
     }
 
+    //Obtener asignaturas por ciclo académico y ID de carrera.
+    @GetMapping("/filtro-carrera-ciclo")
+    public ResponseEntity<List<AsignaturaDTO>> obtenerAsignaturasPorCicloYCarrera(
+            @RequestParam("ciclo") int ciclo,
+            @RequestParam("idCarrera") Long idCarrera) {
+        List<AsignaturaDTO> asignaturas = asignaturaService.obtenerAsignaturasPorCicloYCarrera(ciclo, idCarrera);
+        return ResponseEntity.ok(asignaturas);
+    }
+
 }

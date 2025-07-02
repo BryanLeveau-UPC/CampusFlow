@@ -101,4 +101,20 @@ public class AsignaturaService {
 
         return asignaturaDTOS;
     }
+
+    //Obtener asignaturas por ciclo académico y ID de carrera.
+    public List<AsignaturaDTO> obtenerAsignaturasPorCicloYCarrera(int cicloAcademico, Long idCarrera) {
+        List<Asignatura> asignaturas = asignaturaRepository.findByCicloAcademicoAndCarreraId(cicloAcademico, idCarrera);
+        List<AsignaturaDTO> asignaturaDTOS = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+
+        for (Asignatura asignatura : asignaturas) {
+            AsignaturaDTO asignaturaDTO = modelMapper.map(asignatura, AsignaturaDTO.class);
+            if (asignatura.getCarrera() != null) {
+                asignaturaDTO.setId_carrera(asignatura.getCarrera().getIdCarrera());
+            }
+            asignaturaDTOS.add(asignaturaDTO);
+        }
+        return asignaturaDTOS;
+    }
 }
