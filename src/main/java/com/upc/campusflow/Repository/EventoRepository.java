@@ -47,4 +47,16 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
                     "ORDER BY COUNT(e) DESC"
     )
     List<Evento> findTop3EventosByParticipacion(Pageable pageable);
+
+    /**
+     * Nuevo método: Obtener eventos por ID de Carrera (a través de los profesores).
+     */
+    @Query("SELECT e FROM Evento e WHERE e.profesor.carrera.idCarrera = :idCarrera AND e.Estado = true AND e.FechaFin >= CURRENT_DATE")
+    List<Evento> findByProfesorCarreraIdAndEstadoTrueAndUpcoming(@Param("idCarrera") Long idCarrera);
+
+    /**
+     * Nuevo método: Verificar si un estudiante ya está unido a un evento.
+     */
+    @Query("SELECT COUNT(e) > 0 FROM Evento e JOIN e.estudiantes es WHERE e.IdEvento = :idEvento AND es.IdEstudiante = :idEstudiante")
+    boolean existsByIdEventoAndEstudiantesIdEstudiante(@Param("idEvento") Long idEvento, @Param("idEstudiante") Long idEstudiante);
 }
