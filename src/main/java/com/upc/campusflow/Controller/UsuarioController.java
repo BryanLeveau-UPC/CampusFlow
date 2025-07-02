@@ -29,6 +29,11 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.guardar(usuarioDTO));
     }
 
+    // Buscar por Id
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> BuscarPorID(@PathVariable Long id){
+        return ResponseEntity.ok(usuarioService.buscarPorId(id));
+    }
 
 
     // Modificar
