@@ -1,10 +1,8 @@
 package com.upc.campusflow.Controller;
 
-import com.upc.campusflow.DTO.EstudianteEstadisticaDTO;
 import com.upc.campusflow.DTO.NotaDTO;
 import com.upc.campusflow.Service.NotaService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,5 +51,12 @@ public class NotaController {
             @RequestParam double puntajeMaximo) {
         List<NotaDTO> notas = notaService.obtenerNotasPorEstudianteYRangoPuntaje(idEstudiante, puntajeMinimo, puntajeMaximo);
         return ResponseEntity.ok(notas);
+    }
+
+    // ¡NUEVO ENDPOINT para obtener todas las notas de un estudiante!
+    // Esta ruta es /nota/estudiante/{idEstudiante}
+    @GetMapping("/estudiante/{idEstudiante}")
+    public ResponseEntity<List<NotaDTO>> obtenerNotasDeEstudiante(@PathVariable Long idEstudiante) {
+        return ResponseEntity.ok(notaService.obtenerNotasPorEstudiante(idEstudiante));
     }
 }

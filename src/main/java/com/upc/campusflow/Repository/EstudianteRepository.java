@@ -42,4 +42,8 @@ public interface EstudianteRepository extends JpaRepository<Estudiante,Long> {
             "AND ev.Estado = true")
     List<Estudiante> obtenerEstudiantesPorRangoDeFechas(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
 
+
+    List<Estudiante> findByUsuariosIdUsuario(Long idUsuario);
 }
+
+

@@ -7,13 +7,14 @@ import com.upc.campusflow.Model.Nota;
 import com.upc.campusflow.Repository.NotaRepository;
 import com.upc.campusflow.Repository.AsignaturaRepository;
 import com.upc.campusflow.Repository.EstudianteRepository;
-import com.upc.campusflow.Exception.RecursoNoEncontradoException; // Asegúrate de que esta excepción exista o cámbiala por RuntimeException
+import com.upc.campusflow.Exception.RecursoNoEncontradoException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors; // Asegúrate de que esta importación esté presente
 
 @Service
 public class NotaService {
@@ -41,6 +42,7 @@ public class NotaService {
             NotaDTO notaDTO = modelMapper.map(nota, NotaDTO.class);
             if(nota.getAsignatura() != null){
                 notaDTO.setId_asignatura(nota.getAsignatura().getIdAsignatura());
+                notaDTO.setNombreAsignatura(nota.getAsignatura().getNombre()); // ¡Añadido!
             }
             if(nota.getEstudiante() != null){
                 notaDTO.setId_estudiante(nota.getEstudiante().getIdEstudiante());
@@ -75,6 +77,7 @@ public class NotaService {
         notaDTO = modelMapper.map(nota, NotaDTO.class);
         if(nota.getAsignatura() != null){
             notaDTO.setId_asignatura(nota.getAsignatura().getIdAsignatura());
+            notaDTO.setNombreAsignatura(nota.getAsignatura().getNombre()); // ¡Añadido!
         }
         if(nota.getEstudiante() != null){
             notaDTO.setId_estudiante(nota.getEstudiante().getIdEstudiante());
@@ -111,6 +114,7 @@ public class NotaService {
         NotaDTO dto = modelMapper.map(actualizado, NotaDTO.class);
         if (actualizado.getAsignatura() != null) {
             dto.setId_asignatura(actualizado.getAsignatura().getIdAsignatura());
+            dto.setNombreAsignatura(actualizado.getAsignatura().getNombre()); // ¡Añadido!
         }
         if (actualizado.getEstudiante() != null) {
             dto.setId_estudiante(actualizado.getEstudiante().getIdEstudiante());
@@ -127,6 +131,7 @@ public class NotaService {
         NotaDTO dto = modelMapper.map(entidad, NotaDTO.class);
         if (entidad.getAsignatura() != null) {
             dto.setId_asignatura(entidad.getAsignatura().getIdAsignatura());
+            dto.setNombreAsignatura(entidad.getAsignatura().getNombre()); // ¡Añadido!
         }
         if (entidad.getEstudiante() != null) {
             dto.setId_estudiante(entidad.getEstudiante().getIdEstudiante());
@@ -141,6 +146,7 @@ public class NotaService {
         for (Nota nota : notas) {
             NotaDTO notaDTO = modelMapper.map(nota, NotaDTO.class);
             notaDTO.setId_asignatura(nota.getAsignatura().getIdAsignatura());
+            notaDTO.setNombreAsignatura(nota.getAsignatura().getNombre()); // ¡Añadido!
             if (nota.getEstudiante() != null) {
                 notaDTO.setId_estudiante(nota.getEstudiante().getIdEstudiante());
             }
@@ -157,6 +163,26 @@ public class NotaService {
             NotaDTO notaDTO = modelMapper.map(nota, NotaDTO.class);
             if (nota.getAsignatura() != null) {
                 notaDTO.setId_asignatura(nota.getAsignatura().getIdAsignatura());
+                notaDTO.setNombreAsignatura(nota.getAsignatura().getNombre()); // ¡Añadido!
+            }
+            if (nota.getEstudiante() != null) {
+                notaDTO.setId_estudiante(nota.getEstudiante().getIdEstudiante());
+            }
+            notaDTOS.add(notaDTO);
+        }
+        return notaDTOS;
+    }
+
+    // ¡NUEVO MÉTODO CLAVE para obtener todas las notas de un estudiante!
+    public List<NotaDTO> obtenerNotasPorEstudiante(Long idEstudiante) {
+        List<Nota> notas = notaRepository.findByEstudianteId(idEstudiante); // Llama al método del repositorio
+        List<NotaDTO> notaDTOS = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+        for (Nota nota : notas) {
+            NotaDTO notaDTO = modelMapper.map(nota, NotaDTO.class);
+            if (nota.getAsignatura() != null) {
+                notaDTO.setId_asignatura(nota.getAsignatura().getIdAsignatura());
+                notaDTO.setNombreAsignatura(nota.getAsignatura().getNombre()); // ¡Añadido!
             }
             if (nota.getEstudiante() != null) {
                 notaDTO.setId_estudiante(nota.getEstudiante().getIdEstudiante());

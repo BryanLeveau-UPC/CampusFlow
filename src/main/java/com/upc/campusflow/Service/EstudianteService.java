@@ -291,4 +291,15 @@ public class EstudianteService {
         }
         return dto;
     }
+
+
+    // Nuevo: Método para buscar estudiante por ID de usuario, manejando la List
+    public EstudianteDTO buscarEstudiantePorIdUsuario(Long idUsuario) {
+        List<Estudiante> estudiantes = estudianteRepository.findByUsuariosIdUsuario(idUsuario);
+        if (estudiantes.isEmpty()) {
+            throw new RecursoNoEncontradoException("Estudiante no encontrado para el ID de usuario: " + idUsuario);
+        }
+        // Asumimos que, debido a la relación OneToOne, solo habrá un estudiante (o ninguno)
+        return convertToEstudianteDTO(estudiantes.get(0));
+    }
 }

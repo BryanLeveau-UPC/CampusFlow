@@ -19,4 +19,8 @@ public interface NotaRepository extends JpaRepository<Nota, Long> {
             @Param("puntajeMinimo") double puntajeMinimo,
             @Param("puntajeMaximo") double puntajeMaximo
     );
+
+    // ¡NUEVO MÉTODO CLAVE para obtener todas las notas de un estudiante!
+    @Query("SELECT n FROM Nota n WHERE n.estudiante.IdEstudiante = :idEstudiante AND n.Estado = true")
+    List<Nota> findByEstudianteId(@Param("idEstudiante") Long idEstudiante);
 }

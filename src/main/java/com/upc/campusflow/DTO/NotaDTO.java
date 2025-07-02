@@ -14,7 +14,8 @@ public class NotaDTO {
     private double Puntaje;
     private double Peso_Nota;
     private Long id_asignatura;
-    private boolean Estado;
+    private String nombreAsignatura; // ¡Este campo es crucial!
     private Long id_estudiante;
+    private boolean Estado;
 
 }
