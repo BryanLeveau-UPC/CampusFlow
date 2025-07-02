@@ -94,4 +94,20 @@ public class EstudianteController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new EstudianteDTO());
         }
     }
+
+    /**
+     * Nuevo endpoint: Busca un estudiante por el ID de su usuario asociado.
+     */
+    @GetMapping("/busca-por-usuario/{idUsuario}")
+    public ResponseEntity<EstudianteDTO> buscarEstudiantePorIdUsuario(@PathVariable Long idUsuario) {
+        try {
+            EstudianteDTO estudianteDTO = estudianteService.buscarEstudiantePorIdUsuario(idUsuario);
+            return ResponseEntity.ok(estudianteDTO);
+        } catch (RecursoNoEncontradoException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            // Manejar cualquier otra excepción inesperada
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
