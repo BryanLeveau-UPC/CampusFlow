@@ -9,6 +9,7 @@ import com.upc.campusflow.Repository.AsignaturaRepository; // You have this, but
 import com.upc.campusflow.Repository.TareaRepository;
 import com.upc.campusflow.Repository.EstudianteRepository; // <--- INYECTA ESTE
 import com.upc.campusflow.Repository.HorarioRepository;   // <--- INYECTA ESTE
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ import java.util.List;
 import java.util.stream.Collectors; // Added for .collect(Collectors.toList())
 
 @Service
+@Transactional
+
 public class TareaService {
     final TareaRepository tareaRepository;
     final EstudianteRepository estudianteRepository; // <--- INYECTADO

@@ -18,11 +18,13 @@ public class TareaController {
     // Obtener lista de tareas
     @GetMapping
     public ResponseEntity<List<TareaDTO>> listar() { return ResponseEntity.ok(tareaService.listar()); }
-    // Guardar
+
     @PostMapping
     public ResponseEntity<TareaDTO> guardar(@RequestBody TareaDTO tareaDTO) {
-        return ResponseEntity.ok(tareaService.guardar(tareaDTO));  // Devuelve la tarea guardada con un código 201
+        System.out.println("📥 Recibido en /tareas: " + tareaDTO);
+        return ResponseEntity.ok(tareaService.guardar(tareaDTO));
     }
+
 
     // Modificar
     @PutMapping("/{id}")
