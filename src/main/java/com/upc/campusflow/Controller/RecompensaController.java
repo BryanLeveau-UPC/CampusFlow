@@ -1,6 +1,7 @@
 package com.upc.campusflow.Controller;
 
 import com.upc.campusflow.DTO.RecompensaDTO;
+import com.upc.campusflow.Model.Recompensa;
 import com.upc.campusflow.Service.RecompensaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -39,4 +40,5 @@ public class RecompensaController {
         RecompensaDTO eliminado = recompensaService.eliminar(id);
         return ResponseEntity.ok(eliminado);
     }
+
 }

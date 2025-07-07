@@ -108,4 +108,5 @@ public class RecompensaService {
         RecompensaDTO dto = modelMapper.map(entidad, RecompensaDTO.class);
         return dto;
     }
+
 }
