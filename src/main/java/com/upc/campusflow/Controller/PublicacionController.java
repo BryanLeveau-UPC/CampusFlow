@@ -72,16 +72,12 @@ public class PublicacionController {
         return ResponseEntity.ok(resultado);
     }
 
-    /**
-     * GET /publicaciones/grupo/{idGrupoForo}/fecha/{fecha}
-     * Filtra publicaciones por grupo de foro y fecha
-     */
-    @GetMapping("/grupo/{idGrupoForo}/fecha/{fecha}")
-    public ResponseEntity<List<PublicacionDTO>> listarPorGrupoYFecha(
-            @PathVariable Long idGrupoForo,
-            @PathVariable("fecha") String fecha
-    ) {
-        LocalDate date = LocalDate.parse(fecha);
-        return ResponseEntity.ok(publicacionService.listarPorGrupoYFecha(idGrupoForo, date));
+
+
+
+    @GetMapping("/grupo/{idGrupoForo}")
+    public ResponseEntity<List<PublicacionDTO>> listarPorGrupo(@PathVariable Long idGrupoForo) {
+        List<PublicacionDTO> publicaciones = publicacionService.listarPorGrupo(idGrupoForo);
+        return ResponseEntity.ok(publicaciones);
     }
 }

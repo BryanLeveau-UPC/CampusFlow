@@ -26,7 +26,7 @@ public interface PublicacionRepository extends JpaRepository<Publicacion, Long> 
     @Query(
             "SELECT p " +
                     "FROM Publicacion p " +
-                    "WHERE p.grupoForo.IdGrupoForo = :idGrupoForo " +
+                    "WHERE p.grupoForo.idGrupoForo = :idGrupoForo " +
                     "AND p.label = :label"
     )
     List<Publicacion> findByGrupoForoAndLabel(
@@ -38,16 +38,11 @@ public interface PublicacionRepository extends JpaRepository<Publicacion, Long> 
     /**
      * Filtra publicaciones por grupo de foro y fecha exacta
      */
-    @Query(
-            "SELECT p " +
-                    "FROM Publicacion p " +
-                    "WHERE p.grupoForo.IdGrupoForo = :idGrupoForo " +
-                    "AND p.Fecha = :fecha"
-    )
-    List<Publicacion> findByGrupoForoAndFecha(
-            @Param("idGrupoForo") Long idGrupoForo,
-            @Param("fecha")       LocalDate fecha
-    );
+    @Query("SELECT p FROM Publicacion p WHERE p.grupoForo.idGrupoForo = :idGrupoForo AND p.fecha = :fecha")
+    List<Publicacion> findByGrupoForoIdGrupoForoAndFecha(Long idGrupoForo, LocalDate fecha);
+
+
+    List<Publicacion> findByGrupoForo_IdGrupoForo(Long idGrupoForo);
 }
 
 

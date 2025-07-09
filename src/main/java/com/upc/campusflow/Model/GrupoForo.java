@@ -16,7 +16,7 @@ public class GrupoForo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long IdGrupoForo;
+    private Long idGrupoForo;
     private String Titulo;
     private String Descripcion;
 

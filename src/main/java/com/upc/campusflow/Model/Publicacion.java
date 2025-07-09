@@ -15,17 +15,20 @@ import java.util.List;
 public class Publicacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long IdPublicacion;
-    private String Contenido;
-    private LocalDate Fecha;
+    private Long idPublicacion;
+
+    private String contenido;
+
+    private LocalDate fecha;
+
     private String label;
-    private boolean Estado = true;
+
+    private boolean estado = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idGrupoForo")
     private GrupoForo grupoForo;
 
-    // 1 publicación tiene varios recursos
     @OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Recurso> recursos;
 }

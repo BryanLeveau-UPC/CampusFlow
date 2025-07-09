@@ -35,22 +35,7 @@ public class PublicacionService {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-        // --- SUGGESTED CHANGE HERE ---
-        // Explicitly define the mapping from Publicacion.grupoForo to PublicacionDTO.idGrupoForo
-        modelMapper.createTypeMap(Publicacion.class, PublicacionDTO.class)
-                .addMapping(src -> src.getGrupoForo().getIdGrupoForo(), PublicacionDTO::setIdGrupoForo)
-                .addMappings(mapper -> {
-                    // Ensure null handling for getGrupoForo()
-                    mapper.when(context -> context.getSource() != null && ((Publicacion) context.getSource()).getGrupoForo() == null)
-                            .map(src -> null, PublicacionDTO::setIdGrupoForo);
-                });
-        // This ensures ModelMapper knows how to get the ID, and handles null GrupoForo gracefully.
-        // The `when` clause helps with cases where `getGrupoForo()` might return null directly.
-        // Note: With STRICT, ModelMapper expects all properties to be mapped or skipped.
-        // So, if other properties also cause issues, they might need explicit mapping or skipping.
-        // For example, if there's a 'contenido' field that maps directly, you don't need a specific rule.
-        // The error is specifically about `getGrupoForo()`, so we focus there.
-        // --- END SUGGESTED CHANGE ---
+
 
         List<Publicacion> publicaciones = publicacionRepository.findAll().stream().filter(Publicacion::isEstado).toList();
         List<PublicacionDTO> publicacionDTOS = new ArrayList<>();
@@ -192,13 +177,7 @@ public class PublicacionService {
         return mapToDTO(publicaciones);
     }
 
-    /**
-     * Lista publicaciones filtradas por grupo de foro y fecha exacta
-     */
-    public List<PublicacionDTO> listarPorGrupoYFecha(Long idGrupoForo, LocalDate fecha) {
-        List<Publicacion> publicaciones = publicacionRepository.findByGrupoForoAndFecha(idGrupoForo, fecha);
-        return mapToDTO(publicaciones);
-    }
+
 
     // Método auxiliar para mapear List<Publicacion> a List<PublicacionDTO>
     private List<PublicacionDTO> mapToDTO(List<Publicacion> publicaciones) {
@@ -214,5 +193,11 @@ public class PublicacionService {
             dtos.add(modelMapper.map(p, PublicacionDTO.class));
         }
         return dtos;
+    }
+
+
+    public List<PublicacionDTO> listarPorGrupo(Long idGrupoForo) {
+        List<Publicacion> publicaciones = publicacionRepository.findByGrupoForo_IdGrupoForo(idGrupoForo);
+        return mapToDTO(publicaciones);
     }
 }
