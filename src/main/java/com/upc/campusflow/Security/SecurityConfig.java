@@ -47,6 +47,51 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
+                        // Rutas públicas (no requieren autenticación)
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/carrera").permitAll()
+                        .requestMatchers("/estudiante/register").permitAll()
+                        .requestMatchers("/profesor/register").permitAll()
+                        // Swagger
+                        .requestMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml",
+                                "/webjars/**",
+                                "/swagger-resources/**"
+                        ).permitAll()
+/*
+                        // --- REGLAS ACTUALIZADAS PARA /usuarios ---
+                        // Permitir a ESTUDIANTE, PROFESOR y ADMIN acceder a GET /usuarios/{id} (para obtener sus propios datos)
+                        // Asegúrate de que los roles coincidan exactamente con los que tu JWT contiene (ej. "ESTUDIANTE" o "ROLE_ESTUDIANTE")
+                        .requestMatchers(HttpMethod.GET, "/usuarios/{id}").hasAnyRole("ESTUDIANTE", "PROFESOR", "ADMIN")
+                        // Solo ADMIN puede listar todos los usuarios (GET /usuarios)
+                        .requestMatchers(HttpMethod.GET, "/usuarios").hasRole("ADMIN")
+                        // Solo ADMIN puede crear, modificar o eliminar usuarios directamente a través de /usuarios
+                        .requestMatchers(HttpMethod.POST, "/usuarios").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/usuarios/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").hasRole("ADMIN")
+
+                        // Otras rutas que requieren rol ADMIN (mantener como estaban)
+                        .requestMatchers("/profesor").hasRole("ADMIN")
+                        .requestMatchers("//tareas").hasRole("ADMIN")
+                        .requestMatchers("/recursos").hasRole("ADMIN")
+                        .requestMatchers("/publicacion").hasRole("ADMIN")
+                        .requestMatchers("/nota").hasRole("ADMIN")
+                        .requestMatchers("/horarios").hasRole("ADMIN")
+                        .requestMatchers("/grupoForo").hasRole("ADMIN")
+                        .requestMatchers("/evento").hasRole("ADMIN")
+                        .requestMatchers("/estudiante-estadística").hasRole("ADMIN")
+                        .requestMatchers("/estudiante").hasRole("ADMIN")
+                        .requestMatchers("/carrera").hasRole("ADMIN")
+                        .requestMatchers("/asignatura").hasRole("ADMIN")
+
+                        // Cualquier otra petición requiere autenticación
+                        .anyRequest().authenticated()
+                        */
+
                         .requestMatchers("/**").permitAll() // <-- Permite TODO
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
