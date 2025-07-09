@@ -42,9 +42,6 @@ public class Usuario implements UserDetails {
     @OneToOne(mappedBy = "usuarios", cascade = CascadeType.ALL)
     private Estudiante estudiante;
 
-    @OneToOne
-    @JoinColumn(name = "id_profesor")
-    private Profesor profesor;
 
     private boolean estado = true;
 

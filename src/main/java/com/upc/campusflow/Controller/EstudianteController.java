@@ -110,4 +110,20 @@ public class EstudianteController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    /**
+     * Devuelve el ID de carrera del estudiante asociado al ID de usuario dado.
+     */
+    @GetMapping("/carrera-por-usuario/{idUsuario}")
+    public ResponseEntity<Long> obtenerIdCarreraPorUsuario(@PathVariable Long idUsuario) {
+        try {
+            Long idCarrera = estudianteService.obtenerIdCarreraPorIdUsuario(idUsuario);
+            return ResponseEntity.ok(idCarrera);
+        } catch (RecursoNoEncontradoException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

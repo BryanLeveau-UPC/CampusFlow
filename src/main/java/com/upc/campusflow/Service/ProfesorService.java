@@ -220,9 +220,7 @@ public class ProfesorService {
             nuevoProfesor.setCarrera(carrera); // Asignar la carrera (puede ser null si no es obligatoria para el profesor)
             nuevoProfesor.setEstado(true); // Activar profesor por defecto
 
-            // Importante: Establecer la relación inversa en el Usuario para la consistencia bidireccional
-            // Asumiendo que tu entidad Usuario tiene un campo 'profesor' con @OneToOne
-            usuarioGuardado.setProfesor(nuevoProfesor);
+
             // No es necesario guardar usuarioGuardado de nuevo aquí si cascadeType.ALL está en Usuario.profesor
             // y Profesor es el lado propietario. Pero si tienes problemas, podrías necesitarlo.
             // usuarioRepository.save(usuarioGuardado); // Descomentar si el cascade no es suficiente

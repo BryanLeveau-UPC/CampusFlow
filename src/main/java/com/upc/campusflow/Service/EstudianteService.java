@@ -276,6 +276,13 @@ public class EstudianteService {
             throw e;
         }
     }
+    public Long obtenerIdCarreraPorIdUsuario(Long idUsuario) {
+        EstudianteDTO dto = buscarEstudiantePorIdUsuario(idUsuario);
+        if (dto.getIdCarrera() == null) {
+            throw new RecursoNoEncontradoException("El estudiante no tiene una carrera asignada.");
+        }
+        return dto.getIdCarrera();
+    }
 
     // Entity to DTO conversion method
     private EstudianteDTO convertToEstudianteDTO(Estudiante estudiante) {
